@@ -140,7 +140,7 @@ Client -
 
 your code will be reviewed and request will be merged!
 
-note: Please refer to the DeveloperDocumentation.md and follow the guide while contributing.
+note: Please refer to the DevDocs.md and follow the guide while contributing.
 
 ## License
 This project is licensed under the MIT License.
