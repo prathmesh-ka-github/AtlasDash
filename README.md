@@ -54,7 +54,7 @@ AtlasDash goes beyond solo play with a built-in co-op multiplayer mode. Team up 
 
 ## Built With
 
-MERN Stack
+![Mern stack](image-1.png)
 
 - Client-side application
     - ReactJS
@@ -67,6 +67,7 @@ MERN Stack
     - Insomnia
 - Database system
     - MongoDB
+    - Mongoose
 - Design Tools
     - Figma
     - Adobe Photoshop
@@ -170,4 +171,4 @@ Checkout [LICENSE.md](https://github.com/prathmesh-ka-github/AtlasDash/blob/main
 
 
 ## Appreciation <3
-Give this repo a star! Submit issues if you find bugs! 
+Give this repo a star! [Submit issues](https://github.com/prathmesh-ka-github/AtlasDash/issues/new) if you find any bugs! 

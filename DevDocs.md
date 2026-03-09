@@ -30,6 +30,8 @@ Be expressive while naming your branches.
 
 ## Commits
 
+Also refer to [CommitMoji](https://commitmoji.vercel.app/)
+
 ### Format
 
 We use the `emojiKarma` format for commit messages
