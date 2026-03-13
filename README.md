@@ -6,6 +6,7 @@
 
 ⚠️ **Note:** AtlasDash is currently under active development. Server-side infrastructure is still in progress, and a public beta will not be available until the backend goes live. Stay tuned for updates.
 
+!!Note: Please refer to the [DevDocs.md](https://github.com/prathmesh-ka-github/AtlasDash/blob/main/DevDocs.md) and follow the guide while contributing.
 
 ## About
 AtlasDash is a fast-paced, browser-based geography game. No matter if you are a middle schooler, highschooler or just a curious mind and map enthusiast AtlasDash is made for you! The premise is simple: a country name appears, and you have to find it on the world map — as quickly as possible, with 60 seconds on the clock.
@@ -52,9 +53,9 @@ AtlasDash goes beyond solo play with a built-in co-op multiplayer mode. Team up 
 - Multiplayer option
 - Co-op mode
 
-## Built With
-
 ![Mern stack](image-1.png)
+
+## Built With
 
 - Client-side application
     - ReactJS
@@ -78,6 +79,10 @@ AtlasDash goes beyond solo play with a built-in co-op multiplayer mode. Team up 
 
 ## Getting Started
 
+Note:
+
+Make sure your Javascript Runtime and Package Manger are at the latest stable releases. We used Nodejs and Node Package Manger(npm) for the example below.
+
 ```bash
 # Clone the repository
 git clone https://github.com/prathmesh-ka-github/atlasdash.git
@@ -85,7 +90,7 @@ git clone https://github.com/prathmesh-ka-github/atlasdash.git
 # --- Server Side ---
 
 # Navigate to server dir
-cd atlasdash/server
+cd /atlasdash/server
 
 # Install dependencies
 npm install
@@ -98,7 +103,7 @@ npm run server
 # --- Client Side ---
 
 # Navigate to client dir
-cd atlasdash/client
+cd /atlasdash/client
 
 # Install dependencies
 npm install
@@ -106,6 +111,7 @@ npm install
 # Start the app
 npm run dev
 ```
+
 ## Scripts
 
 ```
@@ -162,7 +168,7 @@ Client -
 
 your code will be reviewed and request will be merged!
 
-note: Please refer to the DevDocs.md and follow the guide while contributing.
+!! Note: Please refer to the [DevDocs.md](https://github.com/prathmesh-ka-github/AtlasDash/blob/main/DevDocs.md) and follow the guide while contributing. (To ensure your commits are merged, please adhere to these guidelines. Your commits will not be accepted unless they follow these instructions.)
 
 ## License
 This project is licensed under the MIT License.
