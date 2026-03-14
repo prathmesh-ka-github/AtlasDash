@@ -8,7 +8,7 @@
 
 !!Note: Please refer to the [DevDocs.md](https://github.com/prathmesh-ka-github/AtlasDash/blob/main/DevDocs.md) and follow the guide while contributing.
 
-## About
+## 🌐 About
 AtlasDash is a fast-paced, browser-based geography game. No matter if you are a middle schooler, highschooler or just a curious mind and map enthusiast AtlasDash is made for you! The premise is simple: a country name appears, and you have to find it on the world map — as quickly as possible, with 60 seconds on the clock.
 
 What starts as an easy warm-up quickly becomes a test of real geographic knowledge. Can you tell Chad from Niger at a glance? Do you know exactly where Kyrgyzstan sits? AtlasDash separates the casual map-gazers from the true geography nerds.
@@ -17,7 +17,7 @@ With an instant-feedback scoring system (+5 for correct, −1 for wrong), every 
 
 Whether you're studying for a geography exam, killing time, or just want to prove you're the smartest person in the room about world maps — AtlasDash has you covered.
 
-## Multiplayer Co-op and Classroom mode
+## 👥 Multiplayer Co-op and Classroom mode
 
 AtlasDash goes beyond solo play with a built-in co-op multiplayer mode. Team up with a friend or classmate and combine your geography knowledge to chase a higher score together. Designed with education in mind, AtlasDash features a dedicated Classroom System that lets an entire class compete simultaneously. Teams of two go head-to-head against other pairs in the same classroom, making it a perfect tool for teachers who want to turn a geography lesson into a competitive, engaging experience.
 
@@ -26,14 +26,14 @@ AtlasDash goes beyond solo play with a built-in co-op multiplayer mode. Team up 
 <p/>
 
 
-## How to Play
+## ❓ How to Play
 
 1. A **country name** appears on the bottom panel
 2. **Identify and Click the correct country** on the world map
 3. Score points and keep going until time's up
 
 
-## Scoring
+## 🎮 Scoring
 
 | Action | Points |
 |---|---|
@@ -42,7 +42,7 @@ AtlasDash goes beyond solo play with a built-in co-op multiplayer mode. Team up 
 | ⏱️ Time limit | **60 seconds** |
 
 
-## Features
+## ✨ Features
 
 - Interactive world map
 - Instant score feedback
@@ -55,7 +55,7 @@ AtlasDash goes beyond solo play with a built-in co-op multiplayer mode. Team up 
 
 ![Mern stack](image-1.png)
 
-## Built With
+## 💻 Built With
 
 - Client-side application
     - ReactJS
@@ -77,7 +77,7 @@ AtlasDash goes beyond solo play with a built-in co-op multiplayer mode. Team up 
     - NeoVIM
     - VS Code
 
-## Getting Started
+## ⚡ Getting Started
 
 Note:
 
@@ -112,7 +112,7 @@ npm install
 npm run dev
 ```
 
-## Scripts
+## 📄 Scripts
 
 ```
 Client - 
@@ -128,7 +128,7 @@ Server -
 ```
 
 
-## Dependencies -
+## 🔧 Dependencies -
 ```
 Client - 
     - @tailwindcss/vite: ^4.2.1
@@ -143,7 +143,7 @@ Server -
     - bcrypt: ^6.0.0
 
 ```
-## Dev Dependencies
+## 🔨 Dev Dependencies
 ```
 Client -
     - @eslint/js: ^9.39.1
@@ -160,7 +160,7 @@ Client -
     - vite: ^7.3.1
 ```
 
-## Contribute
+## 🤝🏻 Contribute
 1. Fork this repository.
 1. Create your own branch.
 1. Commit changes.
@@ -170,11 +170,11 @@ your code will be reviewed and request will be merged!
 
 !! Note: Please refer to the [DevDocs.md](https://github.com/prathmesh-ka-github/AtlasDash/blob/main/DevDocs.md) and follow the guide while contributing. (To ensure your commits are merged, please adhere to these guidelines. Your commits will not be accepted unless they follow these instructions.)
 
-## License
+## 📝 License
 This project is licensed under the MIT License.
 
 Checkout [LICENSE.md](https://github.com/prathmesh-ka-github/AtlasDash/blob/main/LICENSE.md) for more info.
 
 
-## Appreciation <3
+## 💛 Appreciation
 Give this repo a star! [Submit issues](https://github.com/prathmesh-ka-github/AtlasDash/issues/new) if you find any bugs! 
