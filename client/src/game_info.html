@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AtlasDash — Game Info</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+   :root {
+  --gold: #8B6914;
+  --gold-light: #6B4F0E;
+  --gold-dim: #B8922A;
+  --bg: #F5F0E8;        /* warm parchment instead of near-black */
+  --bg2: #EDE8DC;       /* slightly darker parchment for cards */
+  --bg3: #E4DDD0;       /* hover state */
+  --text: #1A1612;      /* near-black text */
+  --muted: #6B6255;     /* warm brown-grey */
+  --accent: #1A5BA8;
+  --red: #B03020;
+  --green: #1E7A45;
+}
+
+/*
+:root {
+    --gold: #C9A84C;
+    --gold-light: #F0C96A;
+    --gold-dim: #7A5C1E;
+    --bg: #0A0A0A;
+    --bg2: #111111;
+    --bg3: #181818;
+    --text: #EDE8DC;
+    --muted: #888880;
+    --accent: #3A7BD5;
+    --red: #C0392B;
+    --green: #27AE60;
+}
+*/
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.4;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem 6rem;
+      overflow: hidden;
+    }
+
+    .hero-map-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 120% 80% at 50% 100%, rgba(58,123,213,0.08) 0%, transparent 60%),
+        var(--bg);
+      z-index: 0;
+    }
+
+    /* Decorative grid lines */
+    .hero-map-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-weight: 900;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 40%, var(--gold-dim) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    .hero-subtitle {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      margin-top: 0.75rem;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-divider {
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 2.5rem auto;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .hero-tagline {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 480px;
+      animation: fadeUp 0.8s 0.6s ease both;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gold-dim);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      animation: fadeUp 1s 1s ease both;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(180deg, var(--gold), transparent);
+      animation: scrollPulse 1.8s ease-in-out infinite;
+    }
+
+    /* ─── SECTION LAYOUT ─── */
+    .sections-wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ─── SECTION CARD ─── */
+    .section-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 0;
+      border-top: 1px solid rgba(201,168,76,0.15);
+      padding: 5rem 0;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .section-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-card:last-child {
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+
+    /* Alternating layout */
+    .section-card.flip {
+      grid-template-columns: 2fr 1fr;
+    }
+
+    .section-card.flip .section-label-col { order: 2; text-align: right; }
+    .section-card.flip .section-body { order: 1; }
+
+    .section-label-col {
+      padding-right: 4rem;
+      padding-top: 0.5rem;
+    }
+
+    .section-card.flip .section-label-col {
+      padding-right: 0;
+      padding-left: 4rem;
+    }
+
+    .section-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem;
+      line-height: 1;
+      color: rgba(201,168,76,0.12);
+      letter-spacing: -0.02em;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 1rem;
+    }
+
+    .section-heading {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      line-height: 1.1;
+      color: var(--text);
+      margin-top: 0.75rem;
+    }
+
+    .section-body {
+      padding-left: 2rem;
+    }
+
+    .section-card.flip .section-body {
+      padding-left: 0;
+      padding-right: 2rem;
+    }
+
+    .section-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      max-width: 560px;
+    }
+
+    /* ─── LIST ITEMS ─── */
+    .info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--bg2);
+      border: 1px solid rgba(201,168,76,0.08);
+      border-radius: 4px;
+      padding: 1.2rem 1.5rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .info-item:hover {
+      border-color: rgba(201,168,76,0.25);
+      background: var(--bg3);
+    }
+
+    .item-icon {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      margin-top: 0.1rem;
+    }
+
+    .item-text {
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .item-text strong {
+      color: var(--gold-light);
+      font-weight: 500;
+    }
+
+    /* ─── POINTS TABLE ─── */
+    .points-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .point-card {
+      background: var(--bg2);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 4px;
+      padding: 1.5rem 1.2rem;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .point-card:hover { transform: translateY(-3px); }
+
+    .point-card.positive { border-top: 2px solid var(--green); }
+    .point-card.negative { border-top: 2px solid var(--red); }
+    .point-card.neutral  { border-top: 2px solid var(--gold); }
+
+    .point-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      line-height: 1;
+    }
+
+    .point-card.positive .point-value { color: var(--green); }
+    .point-card.negative .point-value { color: var(--red); }
+    .point-card.neutral  .point-value { color: var(--gold); }
+
+    .point-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.4rem;
+    }
+
+    /* ─── CLASSROOM TIERS ─── */
+    .tier-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .tier-item {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      background: var(--bg2);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 4px;
+      padding: 1rem 1.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .tier-item:hover { border-color: rgba(201,168,76,0.2); }
+
+    .tier-badge {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      min-width: 80px;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+      text-align: center;
+    }
+
+    .tier-badge.bronze { background: rgba(140,80,20,0.25); color: #CD7F32; border: 1px solid #CD7F32; }
+    .tier-badge.silver { background: rgba(180,180,180,0.1); color: #C0C0C0; border: 1px solid #C0C0C0; }
+    .tier-badge.gold   { background: rgba(201,168,76,0.15); color: var(--gold-light); border: 1px solid var(--gold); }
+    .tier-badge.platinum { background: rgba(100,200,220,0.1); color: #87CEEB; border: 1px solid #87CEEB; }
+    .tier-badge.diamond { background: rgba(180,100,220,0.15); color: #DA70D6; border: 1px solid #DA70D6; }
+
+    .tier-info { flex: 1; }
+    .tier-name { font-size: 0.9rem; color: var(--text); font-weight: 500; }
+    .tier-req  { font-size: 0.78rem; color: var(--muted); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      text-align: center;
+      padding: 4rem 2rem;
+      border-top: 1px solid rgba(201,168,76,0.1);
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+    }
+
+    footer span { color: var(--gold); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.15); }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .section-card,
+      .section-card.flip {
+        grid-template-columns: 1fr;
+      }
+
+      .section-card.flip .section-label-col { order: 1; text-align: left; }
+      .section-card.flip .section-body { order: 2; }
+
+      .section-label-col,
+      .section-card.flip .section-label-col {
+        padding: 0 0 2rem;
+      }
+
+      .section-body,
+      .section-card.flip .section-body {
+        padding: 0;
+      }
+
+      .points-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <div class="hero-map-bg"></div>
+    <div class="hero-content">
+      <!-- <p class="hero-eyebrow">Game Manual &nbsp;·&nbsp; v1.0</p> -->
+      <h1 class="hero-title">AtlasDash</h1>
+      <p class="hero-subtitle">The World Geography Challenge</p>
+      <div class="hero-divider"></div>
+      <!--<p class="hero-tagline">Race against the clock, conquer every continent.Everything you need to master the map — right here.</p> -->
+    </div>
+    <!--<div class="scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div> -->
+  </section>
+
+  <!-- ─── SECTIONS ─── -->
+  <div class="sections-wrapper">
+
+    <!-- 01 · GAME OBJECTIVE -->
+    <div class="section-card" data-observe>
+      <div class="section-label-col">
+        <div class="section-number">01</div>
+        <div class="section-tag">Overview</div>
+        <h2 class="section-heading">Game<br>Objective</h2>
+      </div>
+      <div class="section-body">
+        <p class="section-desc">AtlasDash is a fast-paced geography challenge. Your mission is simple — identify as many countries as possible before the timer runs out.</p>
+        <ul class="info-list">
+          <li class="info-item">
+            <div class="item-icon">🌍</div>
+            <div class="item-text">Identify the <strong>correct country</strong> on the world map based on the name shown on screen.</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">⏱</div>
+            <div class="item-text">Answer as many countries as you can within the <strong>60-second</strong> time limit.</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">🏆</div>
+            <div class="item-text">Maximize your score, climb classroom leaderboards, and prove your geography knowledge.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 02 · GAME RULES -->
+    <div class="section-card flip" data-observe>
+      <div class="section-label-col">
+        <div class="section-number">02</div>
+        <div class="section-tag">Rules</div>
+        <h2 class="section-heading">Game<br>Rules</h2>
+      </div>
+      <div class="section-body">
+        <p class="section-desc">Keep these ground rules in mind before you start your dash across the atlas.</p>
+        <ul class="info-list">
+          <li class="info-item">
+            <div class="item-icon">🗺</div>
+            <div class="item-text">You must click <strong>directly on the country</strong> shown on the interactive world map.</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">❌</div>
+            <div class="item-text"><strong>Incorrect clicks deduct points</strong> — think before you click!</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">⏰</div>
+            <div class="item-text">The round <strong>ends at 00:00</strong>. No additional answers are accepted after time expires.</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">🔄</div>
+            <div class="item-text">A new country appears <strong>automatically</strong> after every answer — no skipping allowed.</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">🚫</div>
+            <div class="item-text">Using external resources or assistance during a <strong>classroom session</strong> is not permitted.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 03 · HOW TO PLAY -->
+    <div class="section-card" data-observe>
+      <div class="section-label-col">
+        <div class="section-number">03</div>
+        <div class="section-tag">Gameplay</div>
+        <h2 class="section-heading">How<br>to Play</h2>
+      </div>
+      <div class="section-body">
+        <p class="section-desc">Get started in seconds. Here's your step-by-step guide to playing AtlasDash.</p>
+        <ul class="info-list">
+          <li class="info-item">
+            <div class="item-icon">1</div>
+            <div class="item-text">A <strong>country name</strong> appears on the right panel when the round begins.</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">2</div>
+            <div class="item-text">Locate and <strong>click the correct country</strong> on the interactive world map.</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">3</div>
+            <div class="item-text">Your <strong>score updates instantly</strong> — green for correct, red for incorrect.</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">4</div>
+            <div class="item-text">The <strong>next country name</strong> appears automatically — keep your momentum!</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">5</div>
+            <div class="item-text">Keep playing until the <strong>timer reaches 00:00</strong> and your final score is recorded.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 04 · POINTS SYSTEM -->
+    <div class="section-card flip" data-observe>
+      <div class="section-label-col">
+        <div class="section-number">04</div>
+        <div class="section-tag">Scoring</div>
+        <h2 class="section-heading">Points<br>System</h2>
+      </div>
+      <div class="section-body">
+        <p class="section-desc">Every second counts, every click matters. Understand how the scoring works to plan your strategy.</p>
+        <div class="points-grid" style="margin-bottom:2rem;">
+          <div class="point-card positive">
+            <div class="point-value">+5</div>
+            <div class="point-label">Correct Answer</div>
+          </div>
+          <div class="point-card negative">
+            <div class="point-value">−1</div>
+            <div class="point-label">Wrong Answer</div>
+          </div>
+          <div class="point-card neutral">
+            <div class="point-value">60s</div>
+            <div class="point-label">Time Limit</div>
+          </div>
+        </div>
+        <ul class="info-list">
+          <li class="info-item">
+            <div class="item-icon">💡</div>
+            <div class="item-text">A <strong>high accuracy rate</strong> beats a high click rate — precision is rewarded.</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">📊</div>
+            <div class="item-text">Your <strong>final score</strong> and accuracy percentage are displayed at round end.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 05 · CLASSROOM SYSTEM -->
+    <div class="section-card" data-observe>
+      <div class="section-label-col">
+        <div class="section-number">05</div>
+        <div class="section-tag">Education</div>
+        <h2 class="section-heading">Classroom<br>System</h2>
+      </div>
+      <div class="section-body">
+        <p class="section-desc">AtlasDash integrates into your classroom experience. Teachers can create sessions, assign rounds, and track student progress in real time.</p>
+        <ul class="info-list" style="margin-bottom:2rem;">
+          <li class="info-item">
+            <div class="item-icon">🏫</div>
+            <div class="item-text"><strong>Teachers</strong> can create a classroom and share a unique join code with students.</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">👩‍🎓</div>
+            <div class="item-text"><strong>Students</strong> join the classroom and compete in teacher-assigned rounds or free-play sessions.</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">📋</div>
+            <div class="item-text">A <strong>live leaderboard</strong> displays rankings within the classroom after each round.</div>
+          </li>
+          <li class="info-item">
+            <div class="item-icon">📈</div>
+            <div class="item-text">Teachers can <strong>view individual progress</strong>, scores, and accuracy stats for each student.</div>
+          </li>
+        </ul>
+
+  </div>
+
+  <!-- ─── FOOTER ─── 
+  <footer>
+    <p><span>AtlasDash</span>Race the clock. Master the map.</p>
+  </footer> -->
+
+  <script>
+    // Intersection Observer for scroll-reveal
+    const cards = document.querySelectorAll('[data-observe]');
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }),
+      { threshold: 0.12 }
+    );
+    cards.forEach(c => observer.observe(c));
+  </script>
+</body>
+</html>
