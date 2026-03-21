@@ -45,11 +45,11 @@ AtlasDash goes beyond solo play with a built-in co-op multiplayer mode. Team up 
 ## ✨ Features
 
 - Interactive world map
--  Instant score feedback
+- Instant score feedback
 - 60-second countdown timer
 - Auto-advancing questions
 - Full world country coverage
-- solo play
+- Solo play
 - Multiplayer option
 - Co-op mode
 
