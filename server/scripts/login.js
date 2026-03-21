@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-const User = require("./userModal")
+const User = require("../db/userModal")
 
 require('dotenv').config(
-    { 
-        path: require('path').resolve(__dirname, '../.env.development') 
+    {
+        path: require('path').resolve(__dirname, '../.env.development')
     }
 );
 
@@ -19,7 +19,7 @@ mongoose.connect(connectionstring)
 
 async function checkUser(inputuser) {
     try {
-        if (await User.findOne({email : inputuser.email}) !== null && await User.findOne({username: inputuser.username}) !== null) {
+        if (await User.findOne({ email: inputuser.email }) !== null && await User.findOne({ username: inputuser.username }) !== null) {
             return 0
         }
         else {
@@ -31,30 +31,35 @@ async function checkUser(inputuser) {
 }
 
 async function addUser(user) {
-    if (user.username !=="" & user.email !=="" & user.password !=="") {
+    if (user.username !== "" & user.email !== "" & user.password !== "") {
         try {
             let salt = bcrypt.genSaltSync(saltRounds)
-            let hashedPassword = bcrypt.hashSync(user.password , salt)
+            let hashedPassword = bcrypt.hashSync(user.password, salt)
             user.password = hashedPassword
             await User.create(user)
-            console.log("User added successfully", user)      
+            console.log("User added successfully", user)
         } catch (err) {
             console.error(err.message)
         }
     }
 }
 
-async function searchUser(inputuser) {
+async function getAllUsers() {
     try {
-        if (await User.findOne({email : inputuser.email}) == null) {
-            return 0
-        }
-        else if (await User.findOne({email : inputuser.email}) !== null){
-            return 1
-        }
+        const data = await User.find({}, { _id: true })
+        return data
     } catch (err) {
         console.error(err)
     }
 }
 
-module.exports = { addUser, searchUser, checkUser };
+async function getUser(useremail) {
+    try {
+        const user = await User.findOne({ email: useremail });
+        return user
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+module.exports = { addUser, getAllUsers, getUser, checkUser };
