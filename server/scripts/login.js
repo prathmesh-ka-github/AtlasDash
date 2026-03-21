@@ -1,7 +1,5 @@
 const bcrypt = require('bcrypt');
-const saltRounds = 12;
-const myPassword = 'userPassword';
-var encriptedpass
+const saltRounds = 10;
 
 const User = require("./userModal")
 
@@ -35,7 +33,7 @@ async function checkUser(inputuser) {
 async function addUser(user) {
     if (user.username !=="" & user.email !=="" & user.password !=="") {
         try {
-            let salt = bcrypt.genSaltSync(10)
+            let salt = bcrypt.genSaltSync(saltRounds)
             let hashedPassword = bcrypt.hashSync(user.password , salt)
             user.password = hashedPassword
             await User.create(user)
