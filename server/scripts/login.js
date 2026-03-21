@@ -3,6 +3,8 @@ const saltRounds = 12;
 const myPassword = 'userPassword';
 var encriptedpass
 
+const User = require("./userModal")
+
 require('dotenv').config(
     { 
         path: require('path').resolve(__dirname, '../.env.development') 
@@ -62,6 +64,32 @@ app.post('/login', async(req,res,next) => {
     next();
 })
 
+    app.post('/register', async (req,res,next) => {
+        try {
+            const user = req.body;
+            let result = await checkUser(user)
+            if(result) {
+                user.token = "none"
+                console.log("User not found...Creating new user.")
+                addUser(user)   
+                res.status(201)
+                res.redirect('/login')
+            }
+            else {
+                console.log("ERR - user found")
+                // res.redirect('/signin')
+                // 400 - Bad request. Error from client side.
+                res.status(400).json({
+                    "err":"ERR - User already exists! Try again or head to login.",
+                    "code":400
+                })
+            }
+            next();
+        } catch (error) {
+            console.error(error);
+        }
+    })
+
 app.get('/users', async (req,res) => {
     try {
         let data = await User.find({}, {_id : true})
@@ -86,7 +114,7 @@ app.post('/getuserdetails', async (req,res) => {
 
 async function checkUser(inputuser) {
     try {
-        if (await User.findOne({email : inputuser.email}) !== null) {
+        if (await User.findOne({email : inputuser.email}) !== null && await User.findOne({username: inputuser.username}) !== null) {
             return 0
         }
         else {
@@ -98,7 +126,7 @@ async function checkUser(inputuser) {
 }
 
 async function addUser(user) {
-    if (user.username !=="" & user.email !=="" & user.phonenumber !=="" & user.password !=="") {
+    if (user.username !=="" & user.email !=="" & user.password !=="") {
         try {
             let salt = bcrypt.genSaltSync(10)
             let hashedPassword = bcrypt.hashSync(user.password , salt)
