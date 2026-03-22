@@ -56,10 +56,10 @@ app.post('/login', async (req, res, next) => {
   if (await auth.checkUser(user)) {
     try {
       const dbuser = await auth.getUser(user.email)
-      let checkpass = bcrypt.compareSync(user.password, dbuser.password)
+      let checkpass = auth.comparePass(user.password, dbuser.password)
       if (checkpass) {
         var token = jwt.sign({ id: dbuser._id }, 'secretkey');
-        await User.updateOne({ email: user.email }, { $set: { token: token } })
+        auth.updateToken(user.email, token)
         console.log("successfully logged in!")
         res.redirect('/')
       }

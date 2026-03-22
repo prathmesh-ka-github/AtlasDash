@@ -62,4 +62,17 @@ async function getUser(useremail) {
     }
 }
 
-module.exports = { addUser, getAllUsers, getUser, checkUser };
+async function updateToken(useremail, token){
+    try {
+        await User.updateOne({ email: useremail }, { $set: { token: token } })
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+async function comparePass(userpass, dbpassword) {
+    let result = bcrypt.compareSync(userpass, dbpassword)
+    return result
+}
+
+module.exports = { checkUser, addUser, getAllUsers, getUser, updateToken, comparePass };
