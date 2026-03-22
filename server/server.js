@@ -1,5 +1,6 @@
 require('dotenv').config({ path: '.env.development' });
 const express = require('express');
+const jwt = require('jsonwebtoken')
 const app = express();
 const port = process.env.PORT;
 
@@ -67,14 +68,14 @@ app.post('/login', async (req, res, next) => {
       }
     } catch (err) {
       res.status(401).json({
-        "err": "ERR - Invalid Credentials! Try again or head to signin.",
+        "err": "ERR - Invalid Credentials! Try again.",
         "code": 401
       })
       console.log(err)
     }
   } else {
     res.status(400).json({
-      "err": "ERR - Invalid Credentials! Try again or head to signin.",
+      "err": "ERR - User dosen't exist. Head to Register User.",
       "code": 400
     })
   }
