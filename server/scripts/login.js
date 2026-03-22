@@ -46,7 +46,7 @@ async function addUser(user) {
 
 async function getAllUsers() {
     try {
-        const data = await User.find({}, { _id: true })
+        const data = await User.find()
         return data
     } catch (err) {
         console.error(err)

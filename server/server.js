@@ -21,9 +21,14 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+app.get('/login', (req, res) => {
+  res.send('Login screen');
+});
+
 app.get('/users', async (req, res) => {
   try {
     let data = await auth.getAllUsers()
+    console.log(data)
     res.status(200).json(data);
   } catch (err) {
     console.error(err)
@@ -125,5 +130,5 @@ app.post('/getuserdetails', async (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`AtlasDash Server listening on port ${port}`);
 });
