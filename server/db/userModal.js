@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
         required: false
     },
     photoID: {
-        type: Integer,
+        type: Number,
         trim: true,
         required: true,
         default: () => Math.floor(Math.random() * 10)
@@ -49,7 +49,8 @@ const userSchema = new mongoose.Schema({
     },
     roomID: {
         type: Array,
-        required: false
+        required: false,
+        default: []
     },
     token: {
         type: String,
