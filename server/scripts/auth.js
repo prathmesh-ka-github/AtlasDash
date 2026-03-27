@@ -42,6 +42,9 @@ async function addUser(user) {
             console.error(err.message)
         }
     }
+    else {
+        throw new Error("Username or Email or Password is empty!");
+    }
 }
 
 async function getAllUsers() {

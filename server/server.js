@@ -14,7 +14,7 @@ const { error } = require("console")
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
-const auth = require('./scripts/login');
+const auth = require('./scripts/auth');
 
 //!-------------GET REQUESTS-------------
 
@@ -85,6 +85,7 @@ app.post('/login', async (req, res, next) => {
 app.post('/register', async (req, res, next) => {
   try {
     const user = req.body;
+    // console.log(user)
     let result = await auth.checkUser(user)
     if (result) {
       user.token = "none"
@@ -110,7 +111,7 @@ app.post('/register', async (req, res, next) => {
 
 app.get('/users', async (req, res) => {
   try {
-    let data = await User.find({}, { _id: true })
+    let data = await auth.getAllUsers()
     res.status(200).json(data);
   } catch (err) {
     console.error(err)
@@ -121,9 +122,7 @@ app.post('/getuserdetails', async (req, res) => {
   try {
     console.log(req.body)
     const useremail = req.body.useremail
-    // console.log('getuserdetails api called')
-    const user = await User.findOne({ email: useremail });
-    // console.log(user)
+    const user = await auth.getUser(useremail)
     res.json(user)
   } catch (err) {
     console.error(err)
