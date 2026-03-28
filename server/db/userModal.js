@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     },
 
     photoID: {
-        type: Integer,
+        type: Number,
         trim: true,
         required: true,
         default: () => Math.floor(Math.random() * 10)
