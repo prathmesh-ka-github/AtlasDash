@@ -4,15 +4,15 @@ export default function MainSection() {
   const navigate = useNavigate();
 
   return (
-    <section className="w-full bg-white">
+    <section className="w-full bg-white mb-0 mt-40">
 
-      <div className="flex flex-col items-center justify-center text-center px-6 pt-10 pb-8 z-10 relative">
+      <div className="flex flex-col items-center justify-center text-center px-6 pt-10 z-10 relative">
 
         <h1
-          className="leading-none mb-2"
+          className="leading-none"
           style={{
             fontFamily: '"Ceviche One", cursive',
-            fontSize: 'clamp(4rem, 10vw, 7rem)',
+            fontSize: 'clamp(8rem, 14vw, 11rem)',
             letterSpacing: '0.04em',
             color: '#1494F3',
           }}
@@ -25,6 +25,8 @@ export default function MainSection() {
           style={{
             color: '#1494F3',
             fontFamily: '"Changa", sans-serif',
+            fontSize: "1.3rem",
+            fontWeight:"400"
           }}
         >
           Can you master the map?
@@ -43,13 +45,13 @@ export default function MainSection() {
         </button>
       </div>
 
-      <div className="relative w-full max-w-4xl mx-auto px-6 -translate-y-25">
+      <div className="relative w-full max-w-fit mx-auto -translate-y-40">
 
         <img
           src="/assets/Map.png"
           alt="World map"
           className="w-full object-contain "
-          style={{ opacity: 0.85 }}
+          style={{ opacity: 0.95 }}
         />
 
         <div
