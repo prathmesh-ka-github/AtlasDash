@@ -8,9 +8,9 @@ export default function Navbar({ showIcons = true }: NavbarProps) {
   const navigate = useNavigate();
 
   return (
-    <nav className="w-full flex items-start justify-between px-6 py-4 bg-white">
+    <nav className="w-full flex items-start justify-between px-6 py-4 fixed top-0 z-50">
 
-      <div className="flex items-center gap-2 cursor-pointer select-none">
+      <button onClick={() => navigate('/')} className="flex items-center gap-2 cursor-pointer select-none" >
         <img src="/assets/appicon.png" alt="AtlasDash" className="w-9 h-9" />
         <span
           className="text-2xl text-gray-800"
@@ -20,7 +20,7 @@ export default function Navbar({ showIcons = true }: NavbarProps) {
           }}
         >
         </span>
-      </div>
+      </button>
 
       {showIcons && (
         <div className="flex flex-col items-center gap-3 pt-1">
