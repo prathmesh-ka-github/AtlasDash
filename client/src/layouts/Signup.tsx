@@ -112,8 +112,7 @@ export default function Signup() {
     return {
       isValid: Object.keys(newErrors).length === 0,
       sanitizedData: {
-        firstname: sanitizedData.firstname,
-        lastname: sanitizedData.lastname,
+        name : {firstname:sanitizedData.firstname, lastname: sanitizedData.lastname},
         username: sanitizedData.username,
         email: sanitizedData.email,
         password: sanitizedData.password,
@@ -133,7 +132,7 @@ export default function Signup() {
       setIsSubmitting(true);
       setErrors({});
 
-      const response = await fetch('/register', {
+      const response = await fetch('http://localhost:3000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
