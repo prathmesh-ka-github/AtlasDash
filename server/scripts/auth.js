@@ -65,6 +65,15 @@ async function getUser(useremail) {
     }
 }
 
+async function getProfile(usertoken) {
+    try {
+        const user = await User.findOne({ token: usertoken });
+        return user
+    } catch (err) {
+        console.error(err)
+    }
+}
+
 async function updateToken(useremail, token){
     try {
         await User.updateOne({ email: useremail }, { $set: { token: token } })
@@ -78,4 +87,4 @@ async function comparePass(userpass, dbpassword) {
     return result
 }
 
-module.exports = { checkUser, addUser, getAllUsers, getUser, updateToken, comparePass };
+module.exports = { checkUser, addUser, getAllUsers, getUser, getProfile, updateToken, comparePass };

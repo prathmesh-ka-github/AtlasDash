@@ -14,9 +14,9 @@ const { error } = require("console")
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(cors({ 
-    origin : 'http://localhost:5173',
-    methods : ['GET','POST']
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST']
 }))
 
 const auth = require('./scripts/auth');
@@ -34,7 +34,7 @@ app.get('/login', (req, res) => {
 app.get('/users', async (req, res) => {
   try {
     let data = await auth.getAllUsers()
-    console.log(data)
+    // console.log(data)
     res.status(200).json(data);
   } catch (err) {
     console.error(err)
@@ -42,12 +42,21 @@ app.get('/users', async (req, res) => {
 })
 app.post('/getuserdetails', async (req, res) => {
   try {
-    console.log(req.body)
-    const useremail = req.body.useremail
+    // console.log(req.body)
     // console.log('getuserdetails api called')
+    const useremail = req.body.useremail
     const user = await auth.getAllUsers(useremail)
     // console.log(user)
     res.json(user)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+app.get('/users', async (req, res) => {
+  try {
+    let data = await auth.getAllUsers()
+    res.status(200).json(data);
   } catch (err) {
     console.error(err)
   }
@@ -65,11 +74,11 @@ app.post('/login', async (req, res, next) => {
       if (checkpass) {
         var token = jwt.sign({ id: dbuser._id }, 'secretkey');
         auth.updateToken(user.email, token)
-        console.log(user.email," ", "successfully logged in!")
+        console.log(user.email, " ", "successfully logged in!")
 
         res.status(200).json({
-          "message":"user logged in successfully",
-          "code":200,
+          "message": "user logged in successfully",
+          "code": 200,
           "token": token
         })
       }
@@ -119,21 +128,38 @@ app.post('/register', async (req, res, next) => {
   }
 })
 
-app.get('/users', async (req, res) => {
+app.post('/getuserdetails', async (req, res) => {
   try {
-    let data = await auth.getAllUsers()
-    res.status(200).json(data);
+    // console.log(req.body)
+    const useremail = req.body.useremail
+    const user = await auth.getUser(useremail)
+    res.json(user)
   } catch (err) {
     console.error(err)
   }
 })
 
-app.post('/getuserdetails', async (req, res) => {
+app.post('/profile', async (req, res) => {
   try {
-    console.log(req.body)
-    const useremail = req.body.useremail
-    const user = await auth.getUser(useremail)
-    res.json(user)
+    // console.log(req.body)
+    const token = req.body.token
+    if (token == "none") {
+      res.status(401).json({
+        "err":"Token authentication unsuccessful",
+        "code":401
+      })
+    } else {
+      const user = await auth.getProfile(token)
+      // console.log(user)
+      if(user !== null){
+        res.status(202).json(user)
+      } else {
+        res.status(401).json({
+          "err":"Token authentication unsuccessful",
+          "code":401
+        })
+      }
+    }
   } catch (err) {
     console.error(err)
   }
