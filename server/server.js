@@ -5,7 +5,7 @@ const app = express();
 const port = process.env.PORT;
 
 // We will use cors later
-// const cors = require("cors")
+const cors = require("cors")
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
@@ -13,6 +13,11 @@ app.use(express.urlencoded({ extended: false }));
 const { error } = require("console")
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(cors({ 
+    origin : 'http://localhost:5173',
+    methods : ['GET','POST']
+}))
 
 const auth = require('./scripts/auth');
 
