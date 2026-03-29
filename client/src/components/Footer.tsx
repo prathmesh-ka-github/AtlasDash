@@ -10,8 +10,7 @@ export default function Footer() {
 
           <div className="flex flex-col gap-1 items-center">
             <span
-              className="text-7xl text-gray-900"
-              style={{ fontFamily: '"Ceviche One", cursive' }}
+              className="text-7xl text-gray-900 font-Ceviche "
             >
               AtlasDash
             </span>

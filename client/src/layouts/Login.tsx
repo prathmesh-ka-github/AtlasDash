@@ -68,7 +68,7 @@ export default function Login() {
       setErrors({});
 
       const response = await fetch('http://localhost:3000/login', {
-        method: 'POST',
+        method: ' ',
         headers: {
           'Content-Type': 'application/json',
         },

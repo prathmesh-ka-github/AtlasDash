@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@400..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ceviche+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ceviche+One&family=Changa:wght@200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Changa:wght@200..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
@@ -37,4 +37,18 @@ button {
   border: none;
   background: none;
   font-family: inherit;
+}
+
+.font-Ceviche {
+  font-family: 'Ceviche One', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.font-Inter {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+.font-Changa {
+  font-family: 'Changa', Arial, Helvetica, sans-serif;
+  font-weight: 400;
+}
+.font-BalooBhai {
+  font-family: 'Baloo Bhai 2', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }

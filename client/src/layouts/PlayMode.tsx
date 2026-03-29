@@ -1,6 +1,9 @@
 import Navbar from '../components/Navbar';
+import { useNavigate } from 'react-router-dom';
 
 export default function PlayMode() {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen w-full bg-white flex flex-col">
 
@@ -36,32 +39,29 @@ export default function PlayMode() {
 
           <div className="flex flex-col items-center pt-4 pb-2">
             <h1
-              className="leading-none mb-1"
+              className="leading-none mb-1 font-Ceviche"
               style={{
-                fontFamily: '"Ceviche One", cursive',
                 fontSize: 'clamp(3rem, 8vw, 5rem)',
-                letterSpacing: '0.04em',
                 color: '#1494F3',
               }}
             >
               AtlasDash
             </h1>
             <p
-              className="text-sm"
+              className="text-sm font-Changa"
               style={{
                 color: '#1494F3',
-                fontFamily: '"Changa", sans-serif',
               }}
             >
               Can you master the map?
             </p>
           </div>
 
-          <div className="flex-1 flex items-center justify-center gap-48">
+          <div className="flex-1 flex items-center justify-center gap-96 text-2xl text-gray-900 font-Changa">
 
             <button
               className="flex flex-col items-center gap-4 cursor-pointer group"
-              onClick={() => console.log('Solo clicked')}
+              onClick={() => navigate('/SinglePlayer')}
             >
               <img
                 src="/assets/solo.svg"
@@ -69,10 +69,8 @@ export default function PlayMode() {
                 className="w-20 h-20 transition-transform duration-200 group-hover:scale-110"
               />
               <span
-                className="text-2xl font-semibold text-gray-900"
-                style={{ fontFamily: '"Inter", sans-serif' }}
               >
-                Solo
+                SinglePlayer
               </span>
             </button>
 
@@ -86,10 +84,8 @@ export default function PlayMode() {
                 className="w-28 h-28 transition-transform duration-200 group-hover:scale-110"
               />
               <span
-                className="text-2xl font-semibold text-gray-900"
-                style={{ fontFamily: '"Inter", sans-serif' }}
               >
-                Multiplayer
+                MultiPlayer
               </span>
             </button>
 
@@ -97,8 +93,7 @@ export default function PlayMode() {
 
           <div className="pb-8">
             <p
-              className="text-sm text-gray-900"
-              style={{ fontFamily: '"Inter", sans-serif' }}
+              className="text-2xl text-gray-900 font-Changa"
             >
               Select which game mode would you like to play
             </p>
