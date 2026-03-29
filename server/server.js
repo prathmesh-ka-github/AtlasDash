@@ -65,8 +65,13 @@ app.post('/login', async (req, res, next) => {
       if (checkpass) {
         var token = jwt.sign({ id: dbuser._id }, 'secretkey');
         auth.updateToken(user.email, token)
-        console.log("successfully logged in!")
-        res.redirect('/')
+        console.log(user.email," ", "successfully logged in!")
+
+        res.status(200).json({
+          "message":"user logged in successfully",
+          "code":200,
+          "token": token
+        })
       }
       else {
         throw "ERR - Invalid credentials. Wrong password."
