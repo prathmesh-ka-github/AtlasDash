@@ -108,6 +108,7 @@ app.post('/register', async (req, res, next) => {
     let result = await auth.checkUser(user)
     if (result) {
       user.token = "none"
+      user.bio = ""
       console.log("User not found...Creating new user.")
       auth.addUser(user)
       res.status(201)
@@ -115,7 +116,6 @@ app.post('/register', async (req, res, next) => {
     }
     else {
       console.log("ERR - user found")
-      // res.redirect('/signin')
       // 400 - Bad request. Error from client side.
       res.status(400).json({
         "err": "ERR - User already exists! Try again or head to login.",
