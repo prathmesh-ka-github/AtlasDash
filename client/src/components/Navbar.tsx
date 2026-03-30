@@ -8,22 +8,18 @@ export default function Navbar({ showIcons = true }: NavbarProps) {
   const navigate = useNavigate();
 
   return (
-    <nav className="w-full flex items-start justify-between px-6 py-4 fixed top-0 z-50">
+    <nav className='relative'>
 
-      <button onClick={() => navigate('/')} className="flex items-center gap-2 cursor-pointer select-none" >
+      <button onClick={() => navigate('/')} className="flex items-center gap-2 cursor-pointer select-none fixed top-2 left-2 z-50" >
         <img src="/assets/appicon.png" alt="AtlasDash" className="w-9 h-9" />
         <span
-          className="text-2xl text-gray-800"
-          style={{
-            fontFamily: '"Ceviche One", cursive',
-            letterSpacing: '0.05em',
-          }}
-        >
+          className="text-2xl text-gray-800 font-Ceviche"
+        > AtlasDash
         </span>
       </button>
 
       {showIcons && (
-        <div className="flex flex-col items-center gap-3 pt-1">
+        <div className="flex flex-col items-center gap-3 fixed pt-1 top-2 right-2 z-50">
 
           <button
             className="flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity"

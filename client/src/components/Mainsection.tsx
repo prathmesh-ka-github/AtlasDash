@@ -9,11 +9,9 @@ export default function MainSection() {
       <div className="flex flex-col items-center justify-center text-center px-6 pt-10 z-10 relative">
 
         <h1
-          className="leading-none"
+          className="leading-none font-Ceviche"
           style={{
-            fontFamily: '"Ceviche One", cursive',
             fontSize: 'clamp(8rem, 14vw, 11rem)',
-            letterSpacing: '0.04em',
             color: '#1494F3',
           }}
         >
@@ -21,12 +19,10 @@ export default function MainSection() {
         </h1>
 
         <p
-          className="text-sm font-semibold tracking-widest mb-6"
+          className="text-sm font-semibold tracking-widest mb-6 font-Changa"
           style={{
             color: '#1494F3',
-            fontFamily: '"Changa", sans-serif',
             fontSize: "1.3rem",
-            fontWeight:"400"
           }}
         >
           Can you master the map?
@@ -34,10 +30,9 @@ export default function MainSection() {
 
         <button
           className="px-10 py-3 rounded-full text-white font-semibold text-base shadow-md
-                     transition-all duration-200 hover:brightness-110 active:scale-95"
+                     transition-all duration-200 hover:brightness-110 active:scale-95 font-Inter"
           style={{
             backgroundColor: '#A2E260',
-            fontFamily: '"Inter", sans-serif',
           }}
           onClick={() => navigate('/PlayMode')}
         >

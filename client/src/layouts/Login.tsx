@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/auth.css';
+import Cookies from 'js-cookie';
 
 type LoginErrors = {
   email?: string;
@@ -75,6 +76,7 @@ export default function Login() {
         body: JSON.stringify(result.sanitizedData),
       });
 
+      const data = await response.json();
       if (!response.ok) {
         const data = await response.json();
         setErrors((prev) => ({
@@ -84,8 +86,11 @@ export default function Login() {
         return;
       }
 
-      localStorage.setItem('login', 'success');
-      localStorage.setItem('userEmail', result.sanitizedData.email);
+      // Save auth token in cookie for 3 days
+      Cookies.set('authtoken', data.token, { expires: 3 });
+
+      //localStorage.setItem('login', 'success');
+      //localStorage.setItem('userEmail', result.sanitizedData.email);
       window.location.replace('/');
     } catch (error) {
       setErrors((prev) => ({
