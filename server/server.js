@@ -125,8 +125,8 @@ app.post('/register', async (req, res, next) => {
 
 app.post('/getuserdetails', async (req, res) => {
   try {
-    // console.log(req.body)
-    const token = req.cookies.authtoken;
+    const token = req.headers.authorization?.split(' ')[1];
+    // console.log(token)
     if (token == undefined) {
       console.log("Token is undefined")
       res.status(401).json({
@@ -135,7 +135,7 @@ app.post('/getuserdetails', async (req, res) => {
       })
     } else {
       const user = await auth.getUser(token)
-      console.log("This gets back from db",user)
+      // console.log("This gets back from db",user)
       if(user !== null){
         res.status(202).json(user)
       } else {

@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/singleplayer.css'
+import Cookies from 'js-cookie';
 
 
 const SinglePlayer = () => {
@@ -68,14 +69,16 @@ const SinglePlayer = () => {
 
 
   useEffect(() => {
+    const authtoken = Cookies.get('authtoken');
+    // We will send authtoken inside the header of the request in authorization section. This will enable us to use the body along with the token.
     const authenticateUser = async () => {
       try {
         const response = await fetch(`${server}/getuserdetails`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-          },
-          credentials: 'include'
+            'Authorization': `authtoken ${authtoken}`
+          }
         });
 
         if (response.status >= 400) {
