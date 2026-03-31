@@ -1,9 +1,6 @@
 export default function Footer() {
   return (
-    <footer
-      className="w-full px-10 py-8"
-      style={{ backgroundColor: '#A2E260' }}
-    >
+    <footer className="w-full px-10 py-8 text-[#A2E260]">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
 
         <div className="flex flex-col gap-3">
@@ -15,17 +12,12 @@ export default function Footer() {
               AtlasDash
             </span>
             <span
-              className="text-xs text-gray-900"
-              style={{ fontFamily: '"Changa", sans-serif' }}
+              className="text-xs text-gray-900 font-Changa"
             >
               Can you master the map?
             </span>
           </div>
-
-            <p
-              className="text-xs text-gray-900 text-center"
-              style={{ fontFamily: '"Inter", sans-serif' }}
-            >
+            <p className="text-xs text-gray-900 text-center font-Inter">
                 Copyright © 2026 — All rights reserved.
             </p>
 
@@ -36,8 +28,7 @@ export default function Footer() {
             <a
               key={link}
               href="#"
-              className="text-sm text-gray-900 hover:text-gray-900 transition-colors duration-200"
-              style={{ fontFamily: '"Inter", sans-serif' }}
+              className="text-sm text-gray-900 hover:text-gray-900 transition-colors duration-200 font-Inter"
             >
               {link}
             </a>
