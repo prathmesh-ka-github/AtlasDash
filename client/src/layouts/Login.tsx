@@ -67,7 +67,7 @@ export default function Login() {
     try {
       setIsSubmitting(true);
       setErrors({});
-
+      console.log(result.sanitizedData)
       const response = await fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {

@@ -62,7 +62,9 @@ app.post('/login', async (req, res, next) => {
   // console.log(user)
   if (await auth.checkUser(user)) {
     try {
-      const dbuser = await auth.getUser(user.email)
+      const dbuser = await auth.getUserFromEmail(user.email)
+      console.log(dbuser);
+      
       let checkpass = auth.comparePass(user.password, dbuser.password)
       if (checkpass) {
         var token = jwt.sign({ id: dbuser._id }, 'secretkey');
