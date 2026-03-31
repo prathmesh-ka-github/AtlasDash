@@ -1,6 +1,7 @@
 require('dotenv').config({ path: '.env.development' });
 const express = require('express');
 const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser');
 const app = express();
 const port = process.env.PORT;
 
@@ -9,6 +10,7 @@ const cors = require("cors")
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 const { error } = require("console")
 const path = require('path');
