@@ -78,7 +78,7 @@ const SinglePlayer = () => {
           credentials: 'include'
         });
 
-        if (response.status === 401) {
+        if (response.status >= 400) {
           navigate('/login');
         }
       } catch (error) {
