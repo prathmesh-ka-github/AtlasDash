@@ -5,6 +5,8 @@ import '../styles/singleplayer.css'
 
 
 const SinglePlayer = () => {
+  const server = import.meta.env.VITE_SERVER_URL;
+
   const navigate = useNavigate();
   const [fadeOut, setFadeOut] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -68,7 +70,7 @@ const SinglePlayer = () => {
   useEffect(() => {
     const authenticateUser = async () => {
       try {
-        const response = await fetch('http://localhost:3000/getuserdetails', {
+        const response = await fetch(`${server}/getuserdetails`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
