@@ -151,7 +151,7 @@ export default function Signup() {
         return;
       }
       else {
-        navigate('/login')
+        navigate('/Login')
       }
 
     } catch (error) {
