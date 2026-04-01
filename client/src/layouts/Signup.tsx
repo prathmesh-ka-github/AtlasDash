@@ -150,8 +150,10 @@ export default function Signup() {
         }));
         return;
       }
+      else {
+        navigate('/login')
+      }
 
-      window.location.replace('/login');
     } catch (error) {
       setErrors((prev) => ({
         ...prev,
