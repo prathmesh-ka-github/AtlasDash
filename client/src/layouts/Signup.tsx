@@ -14,6 +14,7 @@ type SignupErrors = {
 };
 
 export default function Signup() {
+  const server = import.meta.env.VITE_SERVER_URL;
   const navigate = useNavigate();
 
   const [firstname, setFirstname] = useState('');
@@ -112,7 +113,10 @@ export default function Signup() {
     return {
       isValid: Object.keys(newErrors).length === 0,
       sanitizedData: {
-        name : {firstname:sanitizedData.firstname, lastname: sanitizedData.lastname},
+        name: {
+          firstname: sanitizedData.firstname,
+          lastname: sanitizedData.lastname,
+        },
         username: sanitizedData.username,
         email: sanitizedData.email,
         password: sanitizedData.password,
@@ -132,7 +136,7 @@ export default function Signup() {
       setIsSubmitting(true);
       setErrors({});
 
-      const response = await fetch('http://localhost:3000/register', {
+      const response = await fetch(`${server}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -140,8 +144,9 @@ export default function Signup() {
         body: JSON.stringify(result.sanitizedData),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
         setErrors((prev) => ({
           ...prev,
           server: data?.err || 'Registration failed. Please try again.',
@@ -149,7 +154,7 @@ export default function Signup() {
         return;
       }
 
-      window.location.replace('/login');
+      navigate('/login');
     } catch (error) {
       setErrors((prev) => ({
         ...prev,
