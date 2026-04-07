@@ -4,6 +4,7 @@ import LandingPage from './layouts/LandingPage';
 import PlayMode from './layouts/PlayMode';
 import Login from './layouts/Login';
 import Signup from './layouts/Signup';
+import SinglePlayer from './layouts/SinglePlayer';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/PlayMode" element={<PlayMode />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Signup" element={<Signup />} />
+        <Route path="/SinglePlayer" element={<SinglePlayer />} />
       </Routes>
     </BrowserRouter>
   );

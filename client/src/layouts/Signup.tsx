@@ -14,6 +14,8 @@ type SignupErrors = {
 };
 
 export default function Signup() {
+  const server = import.meta.env.VITE_SERVER_URL;
+
   const navigate = useNavigate();
 
   const [firstname, setFirstname] = useState('');
@@ -132,7 +134,7 @@ export default function Signup() {
       setIsSubmitting(true);
       setErrors({});
 
-      const response = await fetch('http://localhost:3000/register', {
+      const response = await fetch(`${server}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -148,8 +150,10 @@ export default function Signup() {
         }));
         return;
       }
+      else {
+        navigate('/Login')
+      }
 
-      window.location.replace('/login');
     } catch (error) {
       setErrors((prev) => ({
         ...prev,
