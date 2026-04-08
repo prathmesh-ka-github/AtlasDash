@@ -13,7 +13,7 @@ require('dotenv').config(
 const mongoose = require("mongoose")
 const { error } = require("console")
 const connectionstring = process.env.DB_CONNECTION_STRING;
-mongoose.connect(connectionstring)
+mongoose.connect(connectionstring).then(() => console.log('✅ Connected to MongoDB'))
 
 // We have to structure the User data after that we can properly alter these functions. We have to do DB arch design first.
 
@@ -56,19 +56,25 @@ async function getAllUsers() {
     }
 }
 
-async function getUser(useremail) {
+async function getUser(authtoken) {
     try {
-        const user = await User.findOne({ email: useremail });
-        return user
+        var userDetails = await User.findOne({ token: authtoken});
+        if (userDetails == null) {
+            return null
+        }
+        else{return userDetails}
     } catch (err) {
         console.error(err)
     }
 }
 
-async function getProfile(usertoken) {
+async function getUserFromEmail(email) {
     try {
-        const user = await User.findOne({ token: usertoken });
-        return user
+        var userDetails = await User.findOne({ email: email});
+        if (userDetails == null) {
+            return null
+        }
+        else{return userDetails}
     } catch (err) {
         console.error(err)
     }
@@ -87,4 +93,4 @@ async function comparePass(userpass, dbpassword) {
     return result
 }
 
-module.exports = { checkUser, addUser, getAllUsers, getUser, getProfile, updateToken, comparePass };
+module.exports = { checkUser, addUser, getAllUsers, getUser, getUserFromEmail, updateToken, comparePass };

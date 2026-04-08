@@ -11,6 +11,7 @@ type LoginErrors = {
 };
 
 export default function Login() {
+  const server = import.meta.env.VITE_SERVER_URL;
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -68,7 +69,7 @@ export default function Login() {
       setIsSubmitting(true);
       setErrors({});
 
-      const response = await fetch('http://localhost:3000/login', {
+      const response = await fetch(`${server}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,8 +78,8 @@ export default function Login() {
       });
 
       const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
         setErrors((prev) => ({
           ...prev,
           server: data?.err || 'Login failed. Please try again.',
@@ -86,12 +87,8 @@ export default function Login() {
         return;
       }
 
-      // Save auth token in cookie for 3 days
       Cookies.set('authtoken', data.token, { expires: 3 });
-
-      //localStorage.setItem('login', 'success');
-      //localStorage.setItem('userEmail', result.sanitizedData.email);
-      window.location.replace('/');
+      navigate('/');
     } catch (error) {
       setErrors((prev) => ({
         ...prev,
