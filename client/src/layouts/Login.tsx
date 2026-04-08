@@ -68,7 +68,7 @@ export default function Login() {
     try {
       setIsSubmitting(true);
       setErrors({});
-
+      console.log(result.sanitizedData)
       const response = await fetch(`${server}/login`, {
         method: 'POST',
         headers: {

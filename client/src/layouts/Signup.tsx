@@ -153,6 +153,9 @@ export default function Signup() {
         }));
         return;
       }
+      else {
+        navigate('/Login')
+      }
 
       navigate('/login');
     } catch (error) {
