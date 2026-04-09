@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/auth.css';
+import Cookies from 'js-cookie'
 
 type LoginErrors = {
   email?: string;
@@ -69,8 +70,8 @@ export default function Login() {
       setIsSubmitting(true);
       setErrors({});
 
-      const response = await fetch('http://localhost:3000/login', {
-        method: ' ',
+      const response = await fetch(`${server}/login`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },

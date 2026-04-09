@@ -15,7 +15,6 @@ type SignupErrors = {
 
 export default function Signup() {
   const server = import.meta.env.VITE_SERVER_URL;
-
   const navigate = useNavigate();
 
   const [firstname, setFirstname] = useState('');
