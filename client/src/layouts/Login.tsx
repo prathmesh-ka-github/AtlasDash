@@ -69,10 +69,7 @@ export default function Login() {
     try {
       setIsSubmitting(true);
       setErrors({});
-<<<<<<<<< Temporary merge branch 1
-
-      const response = await fetch('http://localhost:3000/login', {
-=========
+      
       console.log(result.sanitizedData)
       const response = await fetch(`${server}/login`, {
         method: 'POST',
