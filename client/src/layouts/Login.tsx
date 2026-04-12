@@ -4,6 +4,9 @@ import Navbar from '../components/Navbar';
 import '../styles/auth.css';
 import Cookies from 'js-cookie';
 
+const eyeIcon = '/assets/eye-on.svg';
+const eyeOffIcon = '/assets/eye-off.svg';
+
 type LoginErrors = {
   email?: string;
   password?: string;
@@ -18,21 +21,19 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<LoginErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateEmail = (value: string) => {
     const trimmed = value.trim().toLowerCase();
-
     if (!trimmed) return 'Email is required.';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
       return 'Enter a valid email address.';
     }
-
     return '';
   };
 
   const validatePassword = (value: string) => {
     const trimmed = value.trim();
-
     if (!trimmed) return 'Password is required.';
     return '';
   };
@@ -68,6 +69,10 @@ export default function Login() {
     try {
       setIsSubmitting(true);
       setErrors({});
+<<<<<<<<< Temporary merge branch 1
+
+      const response = await fetch('http://localhost:3000/login', {
+=========
       console.log(result.sanitizedData)
       const response = await fetch(`${server}/login`, {
         method: 'POST',
@@ -175,27 +180,40 @@ export default function Login() {
             </div>
 
             <div className="auth-field-wrap">
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  setErrors((prev) => ({ ...prev, password: '', server: '' }));
-                }}
-                onBlur={() => {
-                  const sanitized = password.trim();
-                  setPassword(sanitized);
-                  setErrors((prev) => ({
-                    ...prev,
-                    password: validatePassword(sanitized),
-                  }));
-                }}
-                className={`auth-input ${
-                  errors.password ? 'auth-input-error' : ''
-                }`}
-              />
+              <div className="auth-input-icon-wrap">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setErrors((prev) => ({ ...prev, password: '', server: '' }));
+                  }}
+                  onBlur={() => {
+                    const sanitized = password.trim();
+                    setPassword(sanitized);
+                    setErrors((prev) => ({
+                      ...prev,
+                      password: validatePassword(sanitized),
+                    }));
+                  }}
+                  className={`auth-input ${errors.password ? 'auth-input-error' : ''}`}
+                />
+                <button
+                  type="button"
+                  className="auth-eye-btn"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  <img
+                    src={showPassword ? eyeOffIcon : eyeIcon}
+                    alt={showPassword ? 'Hide password' : 'Show password'}
+                    width="18"
+                    height="18"
+                  />
+                </button>
+              </div>
               <div className="auth-field-error-slot">
                 <p
                   className={`auth-field-error ${

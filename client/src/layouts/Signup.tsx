@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/auth.css';
 
+const eyeIcon = '/assets/eye-on.svg';
+const eyeOffIcon = '/assets/eye-off.svg';
+
 type SignupErrors = {
   firstname?: string;
   lastname?: string;
@@ -25,6 +28,8 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState<SignupErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const validateFirstname = (value: string) => {
     const trimmed = value.trim();
@@ -364,33 +369,48 @@ export default function Signup() {
             </div>
 
             <div className="auth-field-wrap">
-              <input
-                type="password"
-                name="password"
-                placeholder="Set password"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  setErrors((prev) => ({
-                    ...prev,
-                    password: '',
-                    confirmPassword: '',
-                    server: '',
-                  }));
-                }}
-                onBlur={() => {
-                  const sanitized = password.trim();
-                  setPassword(sanitized);
-                  setErrors((prev) => ({
-                    ...prev,
-                    password: validatePassword(sanitized),
-                    confirmPassword: confirmPassword.trim()
-                      ? validateConfirmPassword(confirmPassword, sanitized)
-                      : prev.confirmPassword,
-                  }));
-                }}
-                className={`auth-input ${errors.password ? 'auth-input-error' : ''}`}
-              />
+              <div className="auth-input-icon-wrap">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  placeholder="Set password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setErrors((prev) => ({
+                      ...prev,
+                      password: '',
+                      confirmPassword: '',
+                      server: '',
+                    }));
+                  }}
+                  onBlur={() => {
+                    const sanitized = password.trim();
+                    setPassword(sanitized);
+                    setErrors((prev) => ({
+                      ...prev,
+                      password: validatePassword(sanitized),
+                      confirmPassword: confirmPassword.trim()
+                        ? validateConfirmPassword(confirmPassword, sanitized)
+                        : prev.confirmPassword,
+                    }));
+                  }}
+                  className={`auth-input ${errors.password ? 'auth-input-error' : ''}`}
+                />
+                <button
+                  type="button"
+                  className="auth-eye-btn"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  <img
+                    src={showPassword ? eyeOffIcon : eyeIcon}
+                    alt={showPassword ? 'Hide password' : 'Show password'}
+                    width="18"
+                    height="18"
+                  />
+                </button>
+              </div>
               <div className="auth-field-error-slot">
                 <p
                   className={`auth-field-error ${
@@ -405,34 +425,49 @@ export default function Signup() {
             </div>
 
             <div className="auth-field-wrap">
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm password"
-                value={confirmPassword}
-                onChange={(e) => {
-                  setConfirmPassword(e.target.value);
-                  setErrors((prev) => ({
-                    ...prev,
-                    confirmPassword: '',
-                    server: '',
-                  }));
-                }}
-                onBlur={() => {
-                  const sanitized = confirmPassword.trim();
-                  setConfirmPassword(sanitized);
-                  setErrors((prev) => ({
-                    ...prev,
-                    confirmPassword: validateConfirmPassword(
-                      sanitized,
-                      password
-                    ),
-                  }));
-                }}
-                className={`auth-input ${
-                  errors.confirmPassword ? 'auth-input-error' : ''
-                }`}
-              />
+              <div className="auth-input-icon-wrap">
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  name="confirmPassword"
+                  placeholder="Confirm password"
+                  value={confirmPassword}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    setErrors((prev) => ({
+                      ...prev,
+                      confirmPassword: '',
+                      server: '',
+                    }));
+                  }}
+                  onBlur={() => {
+                    const sanitized = confirmPassword.trim();
+                    setConfirmPassword(sanitized);
+                    setErrors((prev) => ({
+                      ...prev,
+                      confirmPassword: validateConfirmPassword(
+                        sanitized,
+                        password
+                      ),
+                    }));
+                  }}
+                  className={`auth-input ${
+                    errors.confirmPassword ? 'auth-input-error' : ''
+                  }`}
+                />
+                <button
+                  type="button"
+                  className="auth-eye-btn"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                >
+                  <img
+                    src={showConfirmPassword ? eyeOffIcon : eyeIcon}
+                    alt={showConfirmPassword ? 'Hide password' : 'Show password'}
+                    width="18"
+                    height="18"
+                  />
+                </button>
+              </div>
               <div className="auth-field-error-slot">
                 <p
                   className={`auth-field-error ${

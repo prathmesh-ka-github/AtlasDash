@@ -1,20 +1,22 @@
-import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './layouts/LandingPage';
-import PlayMode from './layouts/PlayMode';
 import Login from './layouts/Login';
 import Signup from './layouts/Signup';
+import PlayMode from './layouts/PlayMode';
 import SinglePlayer from './layouts/SinglePlayer';
+import './App.css';
+import FaqPage from './layouts/FaqPage';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/PlayMode" element={<PlayMode />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Signup" element={<Signup />} />
-        <Route path="/SinglePlayer" element={<SinglePlayer />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/playmode" element={<PlayMode />} />
+        <Route path="/singleplayer" element={<SinglePlayer />} />
+        <Route path="/Faqs" element={<FaqPage />} />
       </Routes>
     </BrowserRouter>
   );
