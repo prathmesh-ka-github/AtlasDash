@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+
 
 const faqData = [
   {
@@ -62,88 +65,92 @@ export default function FaqPage() {
   };
 
   return (
-    <section className="w-full min-h-screen bg-white px-6 py-16">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-          <h1
-            className="text-4xl md:text-5xl font-bold text-black"
-            style={{ fontFamily: '"Inter", sans-serif' }}
-          >
-            Frequently Asked Questions.
-          </h1>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          {faqData.map((faq, index) => (
-            <div
-              key={index}
-              className="rounded-xl overflow-hidden border"
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderColor: '#1494F3',
-                borderWidth: '1.5px',
-              }}
+    <>
+      <Navbar />
+      <section className="w-full min-h-screen bg-white px-6 py-16 mt-40">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <h1
+              className="text-4xl md:text-5xl font-bold text-black"
+              style={{ fontFamily: '"Inter", sans-serif' }}
             >
-              <button
-                className="w-full flex items-center justify-between px-6 py-5 text-left"
-                style={{ fontFamily: '"Inter", sans-serif' }}
-                onClick={() => handleToggle(index)}
-              >
-                <span className="text-lg font-medium text-gray-900">
-                  Q. {faq.question}
-                </span>
+              Frequently Asked Questions.
+            </h1>
+          </div>
 
-                <span
-                  className="text-2xl font-semibold ml-4 shrink-0"
-                  style={{ color: '#000000' }}
-                >
-                  {openIndex === index ? '−' : '+'}
-                </span>
-              </button>
-
-              {openIndex === index && (
-                <div
-                  style={{
-                    height: '1px',
-                    backgroundColor: '#D1D5DB',
-                  }}
-                />
-              )}
-
+          <div className="flex flex-col gap-4">
+            {faqData.map((faq, index) => (
               <div
-                className="overflow-hidden transition-all duration-300"
+                key={index}
+                className="rounded-xl overflow-hidden border"
                 style={{
-                  maxHeight: openIndex === index ? '500px' : '0px',
+                  backgroundColor: '#FFFFFF',
+                  borderColor: '#1494F3',
+                  borderWidth: '1.5px',
                 }}
               >
-                <p
-                  className="px-6 py-5 text-base text-gray-700 leading-8"
+                <button
+                  className="w-full flex items-center justify-between px-6 py-5 text-left"
+                  style={{ fontFamily: '"Inter", sans-serif' }}
+                  onClick={() => handleToggle(index)}
+                >
+                  <span className="text-lg font-medium text-gray-900">
+                    Q. {faq.question}
+                  </span>
+
+                  <span
+                    className="text-2xl font-semibold ml-4 shrink-0"
+                    style={{ color: '#000000' }}
+                  >
+                    {openIndex === index ? '−' : '+'}
+                  </span>
+                </button>
+
+                {openIndex === index && (
+                  <div
+                    style={{
+                      height: '1px',
+                      backgroundColor: '#D1D5DB',
+                    }}
+                  />
+                )}
+
+                <div
+                  className="overflow-hidden transition-all duration-300"
                   style={{
-                    fontFamily: '"Inter", sans-serif',
-                    textAlign: 'left',
+                    maxHeight: openIndex === index ? '500px' : '0px',
                   }}
                 >
-                  {faq.answer}
-                </p>
+                  <p
+                    className="px-6 py-5 text-base text-gray-700 leading-8"
+                    style={{
+                      fontFamily: '"Inter", sans-serif',
+                      textAlign: 'left',
+                    }}
+                  >
+                    {faq.answer}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div className="mt-12 text-center">
-          <Link
-            to="/"
-            className="inline-block px-6 py-3 rounded-lg border text-sm font-medium transition"
-            style={{
-              borderColor: '#1494F3',
-              color: '#000000',
-              fontFamily: '"Inter", sans-serif',
-            }}
-          >
-            Back to Home
-          </Link>
+          <div className="mt-12 text-center">
+            <Link
+              to="/"
+              className="inline-block px-6 py-3 rounded-lg border text-sm font-medium transition"
+              style={{
+                borderColor: '#1494F3',
+                color: '#000000',
+                fontFamily: '"Inter", sans-serif',
+              }}
+            >
+              Back to Home
+            </Link>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <Footer />
+    </>
   );
 }
