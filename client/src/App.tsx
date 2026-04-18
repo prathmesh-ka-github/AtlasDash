@@ -6,6 +6,7 @@ import PlayMode from './layouts/PlayMode';
 import SinglePlayer from './layouts/SinglePlayer';
 import './App.css';
 import FaqPage from './layouts/FaqPage';
+import ProfilePage from './layouts/ProfilePage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/playmode" element={<PlayMode />} />
         <Route path="/singleplayer" element={<SinglePlayer />} />
         <Route path="/Faqs" element={<FaqPage />} />
+        <Route path="/ProfilePage" element={<ProfilePage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -23,7 +23,7 @@ app.use(cors({
 }))
 
 const auth = require('./scripts/auth');
-const singleplayer = require('./scripts/sinpleplayer');
+const singleplayer = require('./scripts/singleplayer');
 
 //!-------------GET REQUESTS-------------
 

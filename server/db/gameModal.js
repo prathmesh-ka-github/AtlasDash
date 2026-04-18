@@ -12,6 +12,11 @@ const gameSchema = new mongoose.Schema({
         default: 0
     },
 
+    questionSet:{
+        type: Array,
+        required: true,
+    },
+
     answers:[{
         country:{
                 type: mongoose.Schema.Types.ObjectId,

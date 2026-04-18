@@ -32,7 +32,7 @@ const cards = [
 
 export default function KnowMore() {
   return (
-    <section className="w-full bg-white px-6 py-16">
+    <section className="w-full bg-white px-6 pb-40">
 
       {/* TITLE */}
       <h2
@@ -50,7 +50,7 @@ export default function KnowMore() {
       </p>
 
       {/* CARDS */}
-      <div className="grid grid-cols-3 gap-8 max-w-5xl mx-auto">
+      <div className="grid grid-cols-3 gap-16 max-w-7xl mx-auto">
         {cards.map((card) => (
           <div
             key={card.title}
