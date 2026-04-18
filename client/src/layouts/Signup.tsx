@@ -55,6 +55,13 @@ export default function Signup() {
     if (!trimmed) return 'Username is required.';
     if (trimmed.length < 3) return 'Username must be at least 3 characters.';
     if (trimmed.length > 20) return 'Username must not exceed 20 characters.';
+    if (!/^[a-z0-9_-]+$/.test(trimmed))
+      return 'Only letters, numbers, hyphens and underscores are allowed.';
+    if (/^[-_]/.test(trimmed))
+      return 'Username cannot start with a hyphen or underscore.';
+    if (/[-_]$/.test(trimmed))
+      return 'Username cannot end with a hyphen or underscore.';
+
     return '';
   };
 
@@ -294,6 +301,7 @@ export default function Signup() {
               </div>
             </div>
 
+            {/* Username field with real-time validation and hint */}
             <div className="auth-field-wrap">
               <input
                 type="text"
@@ -304,7 +312,7 @@ export default function Signup() {
                   setUsername(e.target.value);
                   setErrors((prev) => ({
                     ...prev,
-                    username: '',
+                    username: validateUsername(e.target.value),
                     server: '',
                   }));
                 }}
@@ -318,6 +326,11 @@ export default function Signup() {
                 }}
                 className={`auth-input ${errors.username ? 'auth-input-error' : ''}`}
               />
+              {username && !errors.username && (
+                <p className="auth-username-hint">
+                  ✓ Letters, numbers, _ and - only. Cannot start or end with _ or -
+                </p>
+              )}
               <div className="auth-field-error-slot">
                 <p
                   className={`auth-field-error ${
