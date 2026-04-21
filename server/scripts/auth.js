@@ -13,7 +13,7 @@ require('dotenv').config(
 const mongoose = require("mongoose")
 const { error } = require("console")
 const connectionstring = process.env.DB_CONNECTION_STRING;
-mongoose.connect(connectionstring).then(() => console.log('✅ Connected to MongoDB'))
+mongoose.connect(connectionstring).then(() => console.log('✅ auth module Connected to MongoDB'))
 
 // We have to structure the User data after that we can properly alter these functions. We have to do DB arch design first.
 

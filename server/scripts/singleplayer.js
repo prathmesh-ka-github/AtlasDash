@@ -10,7 +10,7 @@ require('dotenv').config(
 const mongoose = require("mongoose")
 const { error } = require("console")
 const connectionstring = process.env.DB_CONNECTION_STRING;
-mongoose.connect(connectionstring).then(() => console.log('✅ Connected to MongoDB'))
+mongoose.connect(connectionstring).then(() => console.log('✅ singleplayer module Connected to MongoDB'))
 
 async function getCountries() {
     try {
