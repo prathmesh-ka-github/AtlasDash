@@ -1,37 +1,29 @@
 require('dotenv').config({ path: '.env.development' });
 const express = require('express');
-const port = process.env.PORT;
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser');
-const http = require('http')
 const app = express();
-const server = http.createServer(app)
+const port = process.env.PORT;
 
 // We will use cors later
 const cors = require("cors")
-const path = require('path');
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 const { error } = require("console")
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
 
-const corsOptions = {
+app.use(cors({
   origin: process.env.CORS_PERMISSION,
-  methods: ['GET', 'POST', 'PUT'],
-  credentials: true
-}
-
-app.use(cors(corsOptions));
+  methods: ['GET', 'POST'],
+  credentials: true  
+}))
 
 const auth = require('./scripts/auth');
 const singleplayer = require('./scripts/singleplayer');
-
-const io = require('socket.io')(server, {
-  cors: corsOptions
-});
 
 //!-------------GET REQUESTS-------------
 
@@ -72,7 +64,7 @@ app.post('/login', async (req, res, next) => {
     try {
       const dbuser = await auth.getUserFromEmail(user.email)
       console.log(dbuser);
-
+      
       let checkpass = auth.comparePass(user.password, dbuser.password)
       if (checkpass) {
         var token = jwt.sign({ id: dbuser._id }, 'secretkey');
@@ -138,18 +130,18 @@ app.post('/getuserdetails', async (req, res) => {
     if (token == undefined) {
       console.log("Token is undefined")
       res.status(401).json({
-        "err": "Token authentication unsuccessful",
-        "code": 401
+        "err":"Token authentication unsuccessful",
+        "code":401
       })
     } else {
       const user = await auth.getUser(token)
       // console.log("This gets back from db",user)
-      if (user !== null) {
+      if(user !== null){
         res.status(202).json(user)
       } else {
         res.status(401).json({
-          "err": "Token authentication unsuccessful",
-          "code": 401
+          "err":"Token authentication unsuccessful",
+          "code":401
         })
       }
     }
@@ -158,15 +150,6 @@ app.post('/getuserdetails', async (req, res) => {
   }
 })
 
-//!-------------SOCKETS-------------
-
-io.on('connection', socket => {
-  console.log(socket.id)
-})
-
-
-//!-------------LISTENING-------------
-
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`AtlasDash Server listening on port ${port}`);
 });
