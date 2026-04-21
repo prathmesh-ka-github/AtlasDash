@@ -418,10 +418,13 @@
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
+  max-width: var(--auth-form-width);
 }
 
 .auth-input-icon-wrap .auth-input {
   width: 100%;
+  max-width: 100%;        /* override the default max-width so it fills the wrap */
   padding-right: 2.5rem;
 }
 
@@ -495,5 +498,15 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
 
   .auth-split-col {
     width: 100%;
+  }
+
+  .auth-username-hint {
+  width: 100%;
+  max-width: var(--auth-form-width);
+  font-size: 0.7rem;
+  color: var(--auth-color-muted);
+  font-family: var(--auth-font-body);
+  padding-left: 1rem;
+  margin-top: 0.25rem;
   }
 }
