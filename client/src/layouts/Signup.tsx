@@ -168,9 +168,8 @@ export default function Signup() {
       else {
         navigate('/Login')
       }
-
-      navigate('/login');
     } catch (error) {
+      console.log(error);
       setErrors((prev) => ({
         ...prev,
         server: 'Unable to connect to server. Please try again.',
