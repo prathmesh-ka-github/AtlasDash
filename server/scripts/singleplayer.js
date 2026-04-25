@@ -38,6 +38,11 @@ async function generateCountryList(){
     console.log(generatedCountries);
 }
 
+async function creategame(){
+    console.log("Creating new game");
+    
+}
+
 function generateQuestions() {
     const pool = Array.from({ length: 109 }, (_, i) => i + 1);
     for (let i = pool.length - 1; i > 0; i--) {

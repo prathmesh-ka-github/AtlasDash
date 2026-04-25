@@ -160,6 +160,11 @@ app.post('/getuserdetails', async (req, res) => {
   }
 })
 
-app.listen(port, () => {
+// ---------------------- Sockets ------------------------------
+io.on("connection", socket=> {
+  console.log(socket.id);
+})
+
+server.listen(port, () => {
   console.log(`AtlasDash Server listening on port ${port}`);
 });

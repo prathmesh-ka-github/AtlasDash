@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/singleplayer.css'
 import Cookies from 'js-cookie';
-
+import { io } from "socket.io-client"
 
 const SinglePlayer = () => {
   const server = import.meta.env.VITE_SERVER_URL;
 
   const navigate = useNavigate();
   const [fadeOut, setFadeOut] = useState(false);
+  const [Time, setTime] = useState(60);
+  const [Score, setScore] = useState(0);
   const svgRef = useRef<SVGSVGElement>(null);
   // console.log('Raw cookie string:', document.cookie);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -23,12 +25,17 @@ const SinglePlayer = () => {
 
     if (document.readyState === 'complete') {
       handleLoad();
+      const socket = io(server)
+      socket.on('connect',()=> {
+        console.log(`You connected to the socket!!! ${socket.id}`)
+      })
+
+      socket.emit('custom-event',10,'Hi',{a: 'a'})
     } else {
       window.addEventListener('load', handleLoad);
       return () => window.removeEventListener('load', handleLoad);
     }
   }, []);
-
 
   // Effect 2 — handles flickering, waits for fadeOut
   useEffect(() => {
@@ -61,12 +68,10 @@ const SinglePlayer = () => {
         (path as SVGPathElement).style.removeProperty('fill');
       });
     }, 1000);
-
     timeouts.push(masterTimeout);
-
     return () => timeouts.forEach(clearTimeout);
 
-  }, []); // 👈 this is the key — runs when fadeOut becomes true
+  }, []);
 
 
   useEffect(() => {
@@ -390,7 +395,7 @@ const SinglePlayer = () => {
         <div className="gamepanels">
           <div className="score-wrapper flex items-end w-full font-Changa text-2xl">
             <div className='score fixed bottom-5 left-5'>
-              Score -&nbsp;<span>69</span>
+              Score -&nbsp;{Score}
             </div>
           </div>
           <div className="countryname-wrapper flex flex-col w-full justify-center items-center ">
@@ -407,7 +412,7 @@ const SinglePlayer = () => {
           <div className="toppanel w-full flex flex-col items-center">
             <div className='fixed top-0 mt-4 flex flex-col justify-center items-center'>
               <div className="timeinstruction font-Changa">Time</div>
-              <div className="time text-5xl font-BalooBhai font-semibold">00:29</div>
+              <div className="time text-5xl font-BalooBhai font-semibold">00:{Time}</div>
             </div>
           </div>
         </div>
