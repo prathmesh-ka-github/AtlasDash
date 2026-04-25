@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import Navbar from '../components/Navbar';
 
 export default function JoinClassroom() {
@@ -43,7 +44,11 @@ export default function JoinClassroom() {
   };
 
   const handleJoin = () => {
-    if (!validateAll()) return;
+    if (!validateAll()) {
+      toast.error('Please fix the errors before submitting.');
+      return;
+    }
+    toast.success('Joined classroom successfully!');
     console.log('Join classroom clicked', { classId, password });
     // API call
   };

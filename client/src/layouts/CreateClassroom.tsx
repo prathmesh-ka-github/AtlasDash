@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import Navbar from '../components/Navbar';
 
 export default function CreateClassroom() {
@@ -66,7 +67,11 @@ export default function CreateClassroom() {
   };
 
   const handleCreate = () => {
-    if (!validateAll()) return;
+    if (!validateAll()) {
+      toast.error('Please fix the errors before submitting.');
+      return;
+    }
+    toast.success('Classroom created successfully!');
     console.log('Create classroom clicked', { name, password, confirmPassword, teams });
     // API call
   };
