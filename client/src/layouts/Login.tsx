@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'sonner';
 import Navbar from "../components/Navbar";
 import "../styles/auth.css";
 import Cookies from "js-cookie";
@@ -70,6 +71,7 @@ export default function Login() {
       setIsSubmitting(true);
       setErrors({});
       console.log(result.sanitizedData);
+      const toastId = toast.loading('Logging in...');
       const response = await fetch(`${server}/login`, {
         method: "POST",
         headers: {
@@ -81,6 +83,7 @@ export default function Login() {
       const data = await response.json();
 
       if (!response.ok) {
+        toast.error(data?.err || 'Login failed. Please try again.', { id: toastId });
         setErrors((prev) => ({
           ...prev,
           server: data?.err || "Login failed. Please try again.",
@@ -88,9 +91,11 @@ export default function Login() {
         return;
       }
 
+      toast.success('Welcome back!', { id: toastId });
       Cookies.set("authtoken", data.token, { expires: 3 });
       navigate("/");
     } catch (error) {
+      toast.error('Unable to connect to server. Please try again.');
       setErrors((prev) => ({
         ...prev,
         server: "Unable to connect to server. Please try again.",
