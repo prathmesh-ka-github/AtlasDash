@@ -10,6 +10,7 @@ import ProfilePage from './layouts/ProfilePage';
 import MultiplayerMode from './layouts/MultiplayerMode';
 import CreateClassroom from './layouts/CreateClassroom';
 import JoinClassroom from './layouts/JoinClassroom';
+import ClassroomLobby from './layouts/ClassroomLobby';
 import './App.css';
 
 import ScrollToTop from './components/ScrollToTop';
@@ -38,6 +39,7 @@ function App() {
         <Route path="/multiplayer" element={<MultiplayerMode />} />
         <Route path="/create-classroom" element={<CreateClassroom />} />
         <Route path="/join-classroom" element={<JoinClassroom />} />
+        <Route path="/classroom" element={<ClassroomLobby />} />
 
       </Routes>
     </Router>

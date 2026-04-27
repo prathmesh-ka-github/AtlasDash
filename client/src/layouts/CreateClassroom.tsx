@@ -71,9 +71,21 @@ export default function CreateClassroom() {
       toast.error('Please fix the errors before submitting.');
       return;
     }
+
+    // Generate a random classroom ID
+    const classroomID = Math.random().toString(36).substring(2, 8).toUpperCase();
+
     toast.success('Classroom created successfully!');
     console.log('Create classroom clicked', { name, password, confirmPassword, teams });
     // API call
+
+    navigate('/classroom', {
+      state: {
+        classroomName: name.trim(),
+        totalTeams: teams,
+        classroomID: classroomID,
+      },
+    });
   };
 
   return (
