@@ -1,29 +1,37 @@
 require('dotenv').config({ path: '.env.development' });
 const express = require('express');
+const port = process.env.PORT;
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser');
+const http = require('http')
 const app = express();
-const port = process.env.PORT;
+const server = http.createServer(app)
 
 // We will use cors later
 const cors = require("cors")
+const path = require('path');
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-const { error } = require("console")
-const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(cors({
+const { error } = require("console")
+
+const corsOptions = {
   origin: process.env.CORS_PERMISSION,
-  methods: ['GET', 'POST'],
-  credentials: true  
-}))
+  methods: ['GET', 'POST', 'PUT'],
+  credentials: true
+}
+
+app.use(cors(corsOptions));
 
 const auth = require('./scripts/auth');
 const singleplayer = require('./scripts/singleplayer');
+
+const io = require('socket.io')(server, {
+  cors: corsOptions
+});
 
 //!-------------GET REQUESTS-------------
 
@@ -106,8 +114,10 @@ app.post('/register', async (req, res, next) => {
       user.bio = ""
       console.log("User not found...Creating new user.")
       auth.addUser(user)
-      res.status(201)
-      res.redirect('/login')
+      res.status(200).json({
+        "message": "user registered successfully. You should redirect to login",
+        "code": 200
+      })
     }
     else {
       console.log("ERR - user found")

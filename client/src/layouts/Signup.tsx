@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import Navbar from '../components/Navbar';
 import '../styles/auth.css';
 
@@ -148,6 +149,8 @@ export default function Signup() {
       setIsSubmitting(true);
       setErrors({});
 
+      const toastId = toast.loading('Creating your account...');
+
       const response = await fetch(`${server}/register`, {
         method: 'POST',
         headers: {
@@ -159,6 +162,7 @@ export default function Signup() {
       const data = await response.json();
 
       if (!response.ok) {
+        toast.error(data?.err || 'Registration failed. Please try again.', { id: toastId });
         setErrors((prev) => ({
           ...prev,
           server: data?.err || 'Registration failed. Please try again.',
@@ -166,11 +170,12 @@ export default function Signup() {
         return;
       }
       else {
-        navigate('/Login')
+        toast.success('Account created! Please log in.', { id: toastId });
+        navigate('/Login');
       }
-
-      navigate('/login');
     } catch (error) {
+      console.log(error);
+      toast.error('Unable to connect to server. Please try again.');
       setErrors((prev) => ({
         ...prev,
         server: 'Unable to connect to server. Please try again.',

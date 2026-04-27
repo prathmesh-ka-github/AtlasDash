@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 
-export default function PlayMode() {
+export default function MultiplayerMode() {
   const navigate = useNavigate();
 
   return (
@@ -18,14 +18,12 @@ export default function PlayMode() {
             className="w-full object-contain"
             style={{ opacity: 0.85 }}
           />
-
           <div
             className="absolute inset-0"
             style={{
               background: 'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0.6) 20%, rgba(255,255,255,0) 45%)',
             }}
           />
-
           <div
             className="absolute inset-0"
             style={{
@@ -49,9 +47,7 @@ export default function PlayMode() {
             </h1>
             <p
               className="text-sm font-Changa"
-              style={{
-                color: '#1494F3',
-              }}
+              style={{ color: '#1494F3' }}
             >
               Can you master the map?
             </p>
@@ -61,41 +57,33 @@ export default function PlayMode() {
 
             <button
               className="flex flex-col items-center gap-4 cursor-pointer group"
-              onClick={() => navigate('/SinglePlayer')}
+              onClick={() => navigate('/create-classroom')}
             >
               <img
-                src="/assets/solo.svg"
-                alt="Solo"
-                className="w-20 h-20 transition-transform duration-200 group-hover:scale-110"
+                src="/assets/group.svg"
+                alt="Create a Classroom"
+                className="w-28 h-28 transition-transform duration-200 group-hover:scale-110"
               />
-              <span
-              >
-                SinglePlayer
-              </span>
+              <span>Create a Classroom</span>
             </button>
 
             <button
               className="flex flex-col items-center gap-4 cursor-pointer group"
-              onClick={() => navigate('/multiplayer')}
+              onClick={() => navigate('/join-classroom')}
             >
               <img
-                src="/assets/group.svg"
-                alt="Multiplayer"
+                src="/assets/creategroup.svg"
+                alt="Join a Classroom"
                 className="w-28 h-28 transition-transform duration-200 group-hover:scale-110"
               />
-              <span
-              >
-                MultiPlayer
-              </span>
+              <span>Join a Classroom</span>
             </button>
 
           </div>
 
           <div className="pb-8">
-            <p
-              className="text-2xl text-gray-900 font-Changa"
-            >
-              Select which game mode would you like to play
+            <p className="text-2xl text-gray-900 font-Changa">
+              Choose one to start multiplayer
             </p>
           </div>
 
