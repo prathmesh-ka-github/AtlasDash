@@ -48,9 +48,18 @@ export default function JoinClassroom() {
       toast.error('Please fix the errors before submitting.');
       return;
     }
+
+    // API call
+    navigate('/classroom', {
+      state: {
+        classroomName: `${classId}`,
+        totalTeams: 6, //placeholder
+        classroomID: classId,
+      },
+    });
+
     toast.success('Joined classroom successfully!');
     console.log('Join classroom clicked', { classId, password });
-    // API call
   };
 
   return (
