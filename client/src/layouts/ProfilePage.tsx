@@ -99,9 +99,7 @@ export default function ProfilePage() {
     fetchProfile();
   }, [navigate, server]);
 
-  const handleEdit = () => {
-    console.log('Edit clicked');
-  };
+  const handleEdit = () => navigate('/edit-profile');
 
   if (loading) {
     return (
