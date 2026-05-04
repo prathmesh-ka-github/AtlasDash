@@ -12,6 +12,7 @@ import CreateClassroom from './layouts/CreateClassroom';
 import JoinClassroom from './layouts/JoinClassroom';
 import ClassroomLobby from './layouts/ClassroomLobby';
 import ResultPage from './layouts/ResultPage';
+import ResultMulti from './layouts/ResultMulti';
 import './App.css';
 
 import ScrollToTop from './components/ScrollToTop';
@@ -42,6 +43,7 @@ function App() {
         <Route path="/join-classroom" element={<JoinClassroom />} />
         <Route path="/classroom" element={<ClassroomLobby />} />
         <Route path="/result" element={<ResultPage />} />
+        <Route path="/resultmulti" element={<ResultMulti />} />
 
       </Routes>
     </Router>

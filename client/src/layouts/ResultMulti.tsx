@@ -1,33 +1,63 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 
-// Dummy data — API call goes here
-// Each entry maps a country's data-country ID to whether it was answered correctly (true-green) or incorrectly (false-red)
-const dummyResults: Record<string, boolean> = {
+// Dummy data — replace with API call later
+const dummyPlayer1Results: Record<string, boolean> = {
   '3':   true,   // USA — correct
   '2':   true,   // Canada — correct
   '5':   true,   // Brazil — correct
-  '17':  true,   // Libya — correct
-  '16':  true,   // Sudan — correct
   '6':   true,   // Australia — correct
-  '1':   true,   // Russia — correct
+  '17':  true,   // Libya — correct
   '4':   false,  // China — incorrect
-  '7':   false,  // India — incorrect
-  '35':  false,  // Pakistan — incorrect
-  '22':  false,  // Niger — incorrect
   '11':  false,  // DRC — incorrect
-  '34':  false,  // Namibia — incorrect
 };
 
-const dummyScore = 226;
+const dummyPlayer2Results: Record<string, boolean> = {
+  '1':   true,   // Russia — correct
+  '16':  true,   // Sudan — correct
+  '6':   true,   // Australia — correct
+  '35':  false,  // Pakistan — incorrect
+  '22':  false,  // Niger — incorrect
+  '34':  false,  // Namibia — incorrect
+  '7':   true,  // India — incorrect
+};
 
-export default function ResultPage() {
+const dummyTeamScore = 226;
+const dummyPlayer1Name = 'Rishi';
+const dummyPlayer2Name = 'Prathmesh';
+
+// Class leaderboard — replace with API data later
+const dummyLeaderboard = [
+  { rank: 1,  team: 'Team A', player1: 'Rishi', player2: 'Prathmesh',  score: 226 },
+  { rank: 2,  team: 'Team B', player1: 'Rishi', player2: 'Nithin',   score: 198 },
+  { rank: 3,  team: 'Team C', player1: 'Rishi', player2: 'Prathmesh',  score: 185 },
+  { rank: 4,  team: 'Team D', player1: 'Prathmesh', player2: 'Nithin',    score: 172 },
+  { rank: 5,  team: 'Team E', player1: 'Prathmesh', player2: 'Jyotsana',   score: 160 },
+  { rank: 6,  team: 'Team F', player1: 'Nithin', player2: 'Jyotsana',   score: 145 },
+  { rank: 7,  team: 'Team G', player1: 'Jyotsana', player2: 'Harshini',  score: 130 },
+  { rank: 8,  team: 'Team H', player1: 'Prathmesh', player2: 'Harshini',  score: 115 },
+];
+
+type Toggle = 'Both' | 'player1' | 'player2';
+
+export default function ResultMulti() {
   const navigate = useNavigate();
+  const [toggle, setToggle] = useState<Toggle>('Both');
 
-  // Color the SVG paths based on results
+  const getActiveResults = (): Record<string, boolean> => {
+    if (toggle === 'player1') return dummyPlayer1Results;
+    if (toggle === 'player2') return dummyPlayer2Results;
+
+    const merged: Record<string, boolean> = { ...dummyPlayer2Results, ...dummyPlayer1Results };
+    return merged;
+  };
+
+  const activeResults = getActiveResults();
+
   const getPathStyle = (countryId: string): React.CSSProperties => {
-    if (dummyResults[countryId] === true)  return { fill: '#A2E260' }; // green
-    if (dummyResults[countryId] === false) return { fill: '#FF5023' }; // red
+    if (activeResults[countryId] === true)  return { fill: '#A2E260' }; //green
+    if (activeResults[countryId] === false) return { fill: '#FF5023' }; //red
     return {};
   };
 
@@ -44,14 +74,35 @@ export default function ResultPage() {
           Game Over
         </h1>
         <p className="font-Changa text-xl font-semibold text-gray-800">
-          Total Score - {dummyScore}
+          Total Score - {dummyTeamScore}
         </p>
       </div>
 
-      <div className="flex flex-col items-center px-8 pb-6 flex-1">
+      <div className="flex gap-4 px-8 pb-6 flex-1 items-start">
 
-        <div className="w-full max-w-5xl border border-gray-300 rounded-sm overflow-hidden">
-          <svg className="w-full h-auto" viewBox="0 0 1736 856" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
+        <div className="flex flex-col flex-1 min-w-0" style={{ width: '68%' }}>
+
+          <div className="flex gap-2 mb-3">
+            {(['Both', 'player1', 'player2'] as Toggle[]).map((option) => (
+              <button
+                key={option}
+                onClick={() => setToggle(option)}
+                className="px-5 py-2 rounded-full text-sm font-semibold font-Changa
+                           transition-all duration-200 hover:brightness-95 active:scale-95"
+                style={{
+                  backgroundColor: toggle === option ? '#1494F3' : '#E5E7EB',
+                  color: toggle === option ? '#ffffff' : '#374151',
+                }}
+              >
+                {option === 'Both'    ? 'Both' : ''}
+                {option === 'player1' ? dummyPlayer1Name : ''}
+                {option === 'player2' ? dummyPlayer2Name : ''}
+              </button>
+            ))}
+          </div>
+
+          <div className="w-full border border-gray-300 rounded-sm overflow-hidden">
+            <svg className="w-full h-auto" viewBox="0 0 1736 856" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
             <path className='svggroup' data-country="41" style={getPathStyle('41')} d="M1188.25 260.85L1189.75 262.65L1186.85 263.45L1184.45 264.55L1178.55 265.35L1173.25 266.65L1170.85 269.45L1172.75 272.15L1174.15 275.35L1172.15 278.05L1172.95 280.55L1172.05 282.85L1166.85 282.65L1169.95 286.85L1166.85 288.55L1165.45 292.35L1166.55 296.25L1164.75 298.05L1162.65 297.45L1158.65 298.35L1158.45 300.05H1154.35L1152.05 303.75L1152.85 309.15L1146.25 311.85L1142.35 311.25L1141.45 312.65L1138.05 311.85L1132.75 312.85L1123.15 309.55L1127.05 303.75L1125.95 299.65L1121.65 298.55L1120.45 294.45L1117.75 289.35L1119.35 285.85L1116.85 284.85L1117.35 280.15L1117.95 272.15L1123.85 274.65L1127.75 273.75L1128.15 270.85L1132.15 269.95L1134.75 267.95L1134.55 262.85L1138.75 261.55L1139.05 259.35L1141.95 261.05L1143.55 261.25H1146.55L1150.85 262.65L1152.65 263.35L1156.05 261.35L1158.15 262.55L1159.05 259.65L1162.25 259.75L1162.85 258.85L1162.65 256.25L1164.35 254.05L1167.65 255.45L1167.55 257.45L1169.25 257.75L1170.15 263.15L1172.85 265.25L1174.35 263.85L1176.55 263.25L1179.05 260.35L1182.85 260.85H1188.25Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="23" style={getPathStyle('23')} d="M926.45 571.25L927.05 573.25L926.35 576.35L927.25 579.35L926.35 581.75L926.75 583.95L915.05 583.85L914.25 604.35L917.85 609.55L921.45 613.55L911.05 616.15L897.55 615.25L893.75 612.25L871.05 612.45L870.25 612.95L866.95 610.05L863.35 609.85L859.95 610.95L857.25 612.15L856.75 608.15L857.65 602.45L859.65 596.55L859.95 593.85L861.85 588.05L863.25 585.45L866.55 581.25L868.45 578.35L869.05 573.65L868.75 569.95L867.15 567.65L865.65 563.75L864.35 559.95L864.65 558.55L866.35 556.05L864.75 549.85L863.55 545.55L860.75 541.45L861.35 540.25L863.65 539.35L865.35 539.45L867.35 538.75L884.05 538.85L885.35 543.55L886.95 547.45L888.25 549.55L890.35 552.85L894.15 552.35L895.95 551.45L899.05 552.35L899.95 550.75L901.45 547.05L904.95 546.75L905.25 545.65H908.15L907.65 547.95L914.45 547.85L914.55 551.95L915.65 554.35L914.75 558.25L915.15 562.25L916.95 564.65L916.55 572.25L917.95 571.65L920.35 571.85L923.85 570.85L926.45 571.25Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="" d="M860.55 538.25L859.05 533.45L861.35 530.65L863.05 529.55L865.15 531.75L863.15 533.15L862.15 534.75L861.95 537.55L860.55 538.25Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -328,24 +379,82 @@ export default function ResultPage() {
             <path className='svggroup' data-country="141" style={getPathStyle('141')} d="M1677.05 551.65L1677.45 552.15V552.25L1678.15 552.65L1678.05 552.95L1677.45 553.65V553.95L1677.15 554.05V553.65H1676.95V553.25L1676.75 552.85L1676.45 552.65L1676.35 552.35L1676.45 552.05L1676.65 551.85L1676.85 551.65H1677.05Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="141" style={getPathStyle('141')} d="M1688.25 549.75L1688.45 549.65L1688.95 549.95L1689.25 550.05L1689.45 550.25L1689.75 550.75L1690.05 550.85L1690.35 551.15V551.45L1690.85 551.55V551.85L1691.15 551.95L1691.45 551.85L1691.55 551.95L1691.95 552.15L1692.05 552.35L1692.35 552.25L1692.65 552.35L1692.75 552.65L1693.15 552.95L1693.45 553.25L1693.85 553.55L1694.85 554.55L1694.55 554.95L1694.85 555.45L1694.95 556.05L1694.65 555.95L1694.35 555.55L1693.65 554.75L1693.25 554.65L1692.75 554.25L1692.15 554.15L1692.05 553.85L1691.45 553.65L1690.95 553.15H1690.75L1689.95 552.55L1689.45 552.25V552.05L1689.05 551.85L1688.85 551.65L1688.65 551.25L1688.25 550.95L1688.15 550.75V550.35L1687.75 549.85L1687.55 549.75V549.45L1688.25 549.75Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="141" style={getPathStyle('141')} d="M1677.45 543.75L1677.75 543.85L1678.15 544.35L1678.45 544.55L1678.75 544.65L1679.05 544.95L1679.85 545.35L1680.25 545.85V546.25L1680.35 546.85L1680.55 547.05L1680.85 547.35H1681.05L1681.15 547.75L1681.85 548.05L1682.25 547.95L1682.35 548.05V548.35L1682.05 548.45L1681.85 548.75L1681.35 548.55L1680.55 548.15H1680.05L1679.75 547.75L1679.05 547.35L1678.45 546.35L1677.85 545.35L1677.35 545.05L1676.65 544.35V543.85V543.65L1676.95 543.45L1677.25 543.55L1677.45 543.75Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+            </svg>
+          </div>
+
+          <div className="flex justify-end mt-4">
+            <button
+              className="px-8 py-2 text-xl font-semibold font-Changa shadow-md
+                         transition-all duration-200 hover:brightness-95 active:scale-95"
+              style={{ backgroundColor: '#D9D9D9', color: '#1a1a1a' }}
+              onClick={() => navigate('/playmode')}
+            >
+              Back
+            </button>
+          </div>
+
         </div>
 
-        <div className="w-full max-w-5xl flex justify-end mt-4">
-          <button
-            className="px-12 py-3 text-xl font-semibold font-Changa shadow-md
-                       transition-all duration-200 hover:brightness-95 active:scale-95"
-            style={{
-              backgroundColor: '#D9D9D9',
-              color: '#1a1a1a',
-            }}
-            onClick={() => navigate('/playmode')}
+        <div
+          className="shrink-0 rounded-lg overflow-hidden"
+          style={{ backgroundColor: '#F2F2F2', width: '30%' }}
+        >
+          <div
+            className="px-4 py-3 text-center font-BalooBhai font-bold text-lg text-gray-900"
+            style={{ borderBottom: '2px solid #D1D5DB' }}
           >
-            Exit
-          </button>
+            Class Leaderboard
+          </div>
+
+          <div className="overflow-y-auto" style={{ maxHeight: '520px' }}>
+            <table className="w-full text-sm font-Changa">
+              <thead>
+                <tr style={{ backgroundColor: '#E5E7EB' }}>
+                  <th className="px-3 py-2 text-left text-gray-600 font-semibold">Rank</th>
+                  <th className="px-3 py-2 text-left text-gray-600 font-semibold">Team</th>
+                  <th className="px-3 py-2 text-left text-gray-600 font-semibold">Players</th>
+                  <th className="px-3 py-2 text-right text-gray-600 font-semibold">Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dummyLeaderboard.map((entry, index) => (
+                  <tr
+                    key={entry.rank}
+                    style={{
+                      backgroundColor: entry.team === 'Team A'
+                        ? '#DCF5C0'
+                        : index % 2 === 0 ? '#F9FAFB' : '#F2F2F2',
+                      borderBottom: '1px solid #E5E7EB',
+                    }}
+                  >
+                    <td className="px-3 py-2 font-bold text-gray-700">{entry.rank}</td>
+                    <td className="px-3 py-2 font-semibold text-gray-800">{entry.team}</td>
+                    <td className="px-3 py-2 text-gray-600">
+                      <div>{entry.player1}</div>
+                      <div>{entry.player2}</div>
+                    </td>
+                    <td className="px-3 py-2 text-right font-bold text-gray-800">{entry.score}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
       </div>
+
+      <div
+        className="w-full flex items-center justify-between px-8 py-3"
+        style={{ backgroundColor: '#F2F2F2', borderTop: '1px solid #E5E7EB' }}
+      >
+        <span className="font-Changa font-semibold text-gray-700">
+          Team - {dummyPlayer1Name} & {dummyPlayer2Name}
+        </span>
+        <span className="font-Changa font-semibold text-gray-700">
+          Classroom IX
+        </span>
+      </div>
+
     </div>
   );
 }
