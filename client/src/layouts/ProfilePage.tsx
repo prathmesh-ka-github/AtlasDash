@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import '../styles/profilepage.css';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
+import EditProfile from '../layouts/EditProfile';
 
 type UserProfile = {
   gender?: string;
@@ -99,7 +100,9 @@ export default function ProfilePage() {
     fetchProfile();
   }, [navigate, server]);
 
-  const handleEdit = () => navigate('/edit-profile');
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const handleEdit = () => setShowEditModal(true);
 
   if (loading) {
     return (
@@ -203,6 +206,20 @@ export default function ProfilePage() {
       </main>
 
       <Footer />
+       {/* ── Edit Profile Modal ── */}
+      {showEditModal && (
+        <div
+          className="edit-modal-overlay"
+          onClick={() => setShowEditModal(false)}
+        >
+          <div
+            className="edit-modal-container"
+            onClick={e => e.stopPropagation()}
+          >
+            <EditProfile onClose={() => setShowEditModal(false)} isModal />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
