@@ -11,6 +11,8 @@ import MultiplayerMode from './layouts/MultiplayerMode';
 import CreateClassroom from './layouts/CreateClassroom';
 import JoinClassroom from './layouts/JoinClassroom';
 import ClassroomLobby from './layouts/ClassroomLobby';
+import ResultPage from './layouts/ResultPage';
+import ResultMulti from './layouts/ResultMulti';
 import EditProfile from './layouts/EditProfile';
 import './App.css';
 
@@ -41,6 +43,8 @@ function App() {
         <Route path="/create-classroom" element={<CreateClassroom />} />
         <Route path="/join-classroom" element={<JoinClassroom />} />
         <Route path="/classroom" element={<ClassroomLobby />} />
+        <Route path="/result" element={<ResultPage />} />
+        <Route path="/resultmulti" element={<ResultMulti />} />
         <Route path="/edit-profile" element={<EditProfile />} />
 
       </Routes>
