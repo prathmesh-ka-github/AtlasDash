@@ -39,6 +39,11 @@ export default function FAQs() {
   return (
     <section className="w-full bg-white px-6 py-16">
       <div className="text-center mb-8">
+        <Link
+          to="/faqs"
+          className="inline-block mt-3 text-gray-500 hover:text-black transition-colors duration-200"
+          style={{ fontFamily: '"Inter", sans-serif' }}
+        >
         <h2
           className="text-3xl font-bold text-gray-900"
           style={{ fontFamily: '"Inter", sans-serif' }}
@@ -46,11 +51,6 @@ export default function FAQs() {
           Frequently Asked Questions
         </h2>
 
-        <Link
-          to="/faqs"
-          className="inline-block mt-3 text-gray-500 hover:text-black transition-colors duration-200"
-          style={{ fontFamily: '"Inter", sans-serif' }}
-        >
           Click to know more
         </Link>
       </div>
