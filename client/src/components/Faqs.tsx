@@ -48,7 +48,7 @@ export default function FAQs() {
 
         <Link
           to="/faqs"
-          className="inline-block mt-3 text-gray-500 hover:text-black transition-colors duration-200"
+           className="inline-block mt-3 text-blue-500 underline hover:text-blue-700 transition-colors duration-200"
           style={{ fontFamily: '"Inter", sans-serif' }}
         >
           Click to know more

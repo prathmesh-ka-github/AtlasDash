@@ -12,6 +12,7 @@ import CreateClassroom from './layouts/CreateClassroom';
 import JoinClassroom from './layouts/JoinClassroom';
 import ClassroomLobby from './layouts/ClassroomLobby';
 import EditProfile from './layouts/EditProfile';
+import GameInfo from './layouts/GameInfo';
 import './App.css';
 
 import ScrollToTop from './components/ScrollToTop';
@@ -42,6 +43,7 @@ function App() {
         <Route path="/join-classroom" element={<JoinClassroom />} />
         <Route path="/classroom" element={<ClassroomLobby />} />
         <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/game-info" element={<GameInfo />} />
 
       </Routes>
     </Router>
