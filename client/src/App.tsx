@@ -14,6 +14,7 @@ import {ClassroomLobby} from './layouts/ClassroomLobby';
 import {ResultPage} from './layouts/ResultPage';
 import {ResultMulti} from './layouts/ResultMulti';
 import {EditProfile} from './layouts/EditProfile';
+import {GameInfo} from './layouts/GameInfo';
 import './App.css';
 
 import {ScrollToTop} from './components/ScrollToTop';

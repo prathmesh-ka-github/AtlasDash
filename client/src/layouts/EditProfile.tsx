@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import '../styles/editprofile.css';
 import {Navbar} from '../components/Navbar';
 import {Footer} from '../components/Footer';
+import Cookies from 'js-cookie';
+import '../styles/editprofile.css';
 
 interface EditProfileProps {
   onClose?: () => void;

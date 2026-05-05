@@ -6,7 +6,7 @@ interface SettingsModalProps {
   onClose: () => void;
 }
 
-export default function SettingsModal({ onClose }: SettingsModalProps) {
+export function SettingsModal({ onClose }: SettingsModalProps) {
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
