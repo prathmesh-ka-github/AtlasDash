@@ -11,7 +11,7 @@ export function SinglePlayer() {
 
   const navigate = useNavigate();
   const [fadeOut, setFadeOut] = useState(false);
-  const [Score, setScore] = useState(0);
+  const [Score, _setScore] = useState(0);
   const [Question, setQuestion] = useState("");
   const svgRef = useRef<SVGSVGElement>(null);
   // console.log('Raw cookie string:', document.cookie);
@@ -19,8 +19,8 @@ export function SinglePlayer() {
 
   const socketRef = useRef<Socket | null>(null);
   const [timeLeft, setTimeLeft] = useState(60);
-  const [isDone, setIsDone] = useState(false);
-  const [connected, setConnected] = useState(false);
+  const [_isDone, setIsDone] = useState(false);
+  const [_connected, setConnected] = useState(false);
   const [socketId, setSocketId] = useState<string | null>(null);
   useEffect(() => {
     socketRef.current = io("http://localhost:3000");
