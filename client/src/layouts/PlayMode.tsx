@@ -1,7 +1,7 @@
-import Navbar from '../components/Navbar';
+import {Navbar} from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 
-export default function PlayMode() {
+export function PlayMode() {
   const navigate = useNavigate();
 
   return (

@@ -1,18 +1,51 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import { Navbar } from '../components/Navbar';
 import '../styles/singleplayer.css'
 import Cookies from 'js-cookie';
+import { io, Socket } from "socket.io-client";
 
-
-const SinglePlayer = () => {
+export function SinglePlayer() {
   const server = import.meta.env.VITE_SERVER_URL;
+  // const socket = io(server)
 
   const navigate = useNavigate();
   const [fadeOut, setFadeOut] = useState(false);
+  const [Score, _setScore] = useState(0);
+  const [Question, setQuestion] = useState("");
   const svgRef = useRef<SVGSVGElement>(null);
   // console.log('Raw cookie string:', document.cookie);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const socketRef = useRef<Socket | null>(null);
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [_isDone, setIsDone] = useState(false);
+  const [_connected, setConnected] = useState(false);
+  const [socketId, setSocketId] = useState<string | null>(null);
+  useEffect(() => {
+    socketRef.current = io(server);
+    socketRef.current?.on("connected", ({ socketId }) => {
+      setSocketId(socketId);
+      console.log("My socket ID:", socketId);
+    });
+    
+    socketRef.current.on("connect", () => {
+      setConnected(true);
+      socketRef.current?.emit("game-start");
+    });
+    socketRef.current.on("disconnect", () => setConnected(false));
+    socketRef.current.on("timer_update", ({ timeLeft }) => setTimeLeft(timeLeft));
+    socketRef.current.on("timer_done", () => setIsDone(true));
+    socketRef.current.on("nextquestion", ({nextquestion}) => setQuestion(nextquestion.name));
+
+    return () => {
+      socketRef.current?.disconnect(); 
+      // cleanup on unmount
+    };
+  }, []);
+
+
+  const formatTime = (time: number) => String(time).padStart(2, '0');
 
   useEffect(() => {
     const handleLoad = () => {
@@ -20,7 +53,6 @@ const SinglePlayer = () => {
         setFadeOut(true);
       }, 1500);
     };
-
     if (document.readyState === 'complete') {
       handleLoad();
     } else {
@@ -28,7 +60,6 @@ const SinglePlayer = () => {
       return () => window.removeEventListener('load', handleLoad);
     }
   }, []);
-
 
   // Effect 2 — handles flickering, waits for fadeOut
   useEffect(() => {
@@ -61,16 +92,14 @@ const SinglePlayer = () => {
         (path as SVGPathElement).style.removeProperty('fill');
       });
     }, 1000);
-
     timeouts.push(masterTimeout);
-
     return () => timeouts.forEach(clearTimeout);
 
-  }, []); // 👈 this is the key — runs when fadeOut becomes true
+  }, []);
 
 
+  const authtoken = Cookies.get('authtoken');
   useEffect(() => {
-    const authtoken = Cookies.get('authtoken');
     // We will send authtoken inside the header of the request in authorization section. This will enable us to use the body along with the token.
     const authenticateUser = async () => {
       try {
@@ -95,10 +124,11 @@ const SinglePlayer = () => {
 
   const handleMapClick = (e: any) => {
     const path = e.target.closest('path.svggroup');
-    if (path !== null){
-      const countryid = path.dataset.country 
+    if (path !== null) {
+      const countryid = path.dataset.country
       console.log('Clicked: ', countryid);
       setSelectedId(path.dataset.country ?? null);
+      socketRef.current?.emit("countryclick", { countryid, authtoken });
       console.log(path);
     }
   };
@@ -390,24 +420,24 @@ const SinglePlayer = () => {
         <div className="gamepanels">
           <div className="score-wrapper flex items-end w-full font-Changa text-2xl">
             <div className='score fixed bottom-5 left-5'>
-              Score -&nbsp;<span>69</span>
+              Score -&nbsp;{Score}
             </div>
           </div>
           <div className="countryname-wrapper flex flex-col w-full justify-center items-center ">
             <div className="countryname text-center fixed bottom-5">
               <div className="instructions block font-Changa">Click on the country</div>
-              <div className="countryname z-10 right-0 block text-5xl font-BalooBhai font-extrabold">United States of America {selectedId && <p>{selectedId}</p>}</div>
+              <div className="countryname z-10 right-0 block text-5xl font-BalooBhai font-extrabold">{Question} {selectedId && <p>{selectedId}</p>}</div>
             </div>
           </div>
           <div className='playmode-wrapper flex items-center font-Changa text-2xl'>
             <div className="playmode fixed bottom-5 right-5">
-              Singleplayer
+              Singleplayer <br /> {socketId}
             </div>
           </div>
           <div className="toppanel w-full flex flex-col items-center">
             <div className='fixed top-0 mt-4 flex flex-col justify-center items-center'>
               <div className="timeinstruction font-Changa">Time</div>
-              <div className="time text-5xl font-BalooBhai font-semibold">00:29</div>
+              <div className="time text-5xl font-BalooBhai font-semibold">00:{formatTime(timeLeft)}</div>
             </div>
           </div>
         </div>
@@ -421,5 +451,3 @@ const SinglePlayer = () => {
     </div>
   );
 };
-
-export default SinglePlayer;

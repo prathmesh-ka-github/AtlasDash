@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import Navbar from '../components/Navbar';
+import {Navbar} from '../components/Navbar';
 import '../styles/auth.css';
 
 const eyeIcon = '/assets/eye-on.svg';
@@ -17,7 +17,7 @@ type SignupErrors = {
   server?: string;
 };
 
-export default function Signup() {
+export function Signup() {
   const server = import.meta.env.VITE_SERVER_URL;
   const navigate = useNavigate();
 

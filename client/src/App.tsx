@@ -1,23 +1,22 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'sonner';
-import LandingPage from './layouts/LandingPage';
-import Login from './layouts/Login';
-import Signup from './layouts/Signup';
-import PlayMode from './layouts/PlayMode';
-import SinglePlayer from './layouts/SinglePlayer';
-import FaqPage from './layouts/FaqPage';
-import ProfilePage from './layouts/ProfilePage';
-import MultiplayerMode from './layouts/MultiplayerMode';
-import CreateClassroom from './layouts/CreateClassroom';
-import JoinClassroom from './layouts/JoinClassroom';
-import ClassroomLobby from './layouts/ClassroomLobby';
-import ResultPage from './layouts/ResultPage';
-import ResultMulti from './layouts/ResultMulti';
-import EditProfile from './layouts/EditProfile';
-import GameInfo from './layouts/GameInfo';
+import {LandingPage} from './layouts/LandingPage';
+import {Login} from './layouts/Login';
+import {Signup} from './layouts/Signup';
+import {PlayMode} from './layouts/PlayMode';
+import {SinglePlayer} from './layouts/SinglePlayer';
+import {FaqPage} from './layouts/FaqPage';
+import {ProfilePage} from './layouts/ProfilePage';
+import {MultiplayerMode} from './layouts/MultiplayerMode';
+import {CreateClassroom} from './layouts/CreateClassroom';
+import {JoinClassroom} from './layouts/JoinClassroom';
+import {ClassroomLobby} from './layouts/ClassroomLobby';
+import {ResultPage} from './layouts/ResultPage';
+import {ResultMulti} from './layouts/ResultMulti';
+import {EditProfile} from './layouts/EditProfile';
 import './App.css';
 
-import ScrollToTop from './components/ScrollToTop';
+import {ScrollToTop} from './components/ScrollToTop';
 
 function App() {
   return (

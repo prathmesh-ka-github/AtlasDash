@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-export default function MainSection() {
+export function MainSection() {
   const navigate = useNavigate();
 
   return (

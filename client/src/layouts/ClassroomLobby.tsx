@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import {Navbar} from '../components/Navbar';
 
 type Slot = {
   filled: boolean;
@@ -11,7 +11,7 @@ type Team = {
   slots: [Slot, Slot];
 };
 
-export default function ClassroomLobby() {
+export function ClassroomLobby() {
   const location = useLocation();
   const navigate = useNavigate();
 

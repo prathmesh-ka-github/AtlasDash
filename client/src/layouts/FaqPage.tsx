@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import {Navbar} from '../components/Navbar';
+import {Footer} from '../components/Footer';
 
 const faqData = [
   {
@@ -57,7 +57,7 @@ const faqData = [
   },
 ];
 
-export default function FaqPage() {
+export function FaqPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const handleToggle = (index: number) => {

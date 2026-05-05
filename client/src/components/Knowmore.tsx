@@ -32,9 +32,7 @@ const cards = [
   },
 ];
 
-export default function KnowMore() {
-  const navigate = useNavigate();   
-
+export function KnowMore() {
   return (
     <section className="w-full bg-white px-6 pb-40">
 
