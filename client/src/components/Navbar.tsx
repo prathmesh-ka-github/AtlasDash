@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import EditProfile from '../layouts/EditProfile';
+import SettingsModal from '../layouts/settingsModal';
 
 interface NavbarProps {
   showIcons?: boolean;
@@ -9,7 +10,8 @@ interface NavbarProps {
 
 export default function Navbar({ showIcons = true }: NavbarProps) {
   const navigate = useNavigate();
-  const [showEditModal, setShowEditModal] = useState(false);
+  const [showEditModal, setShowEditModal]         = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
 
   const handleProfileClick = () => {
     const token = Cookies.get('authtoken');
@@ -38,46 +40,32 @@ export default function Navbar({ showIcons = true }: NavbarProps) {
               title="Profile"
               onClick={handleProfileClick}
             >
-              <img
-                src="/assets/icon-profile.png"
-                alt="Profile"
-                className="w-12 h-12"
-              />
+              <img src="/assets/icon-profile.png" alt="Profile" className="w-12 h-12" />
             </button>
 
+            {/* Settings — opens SettingsModal */}
             <button
               className="w-7 h-7 flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity"
               title="Settings"
+              onClick={() => setShowSettingsModal(true)}
             >
-              <img
-                src="/assets/icon-settings.png"
-                alt="Settings"
-                className="w-6 h-6"
-              />
+              <img src="/assets/icon-settings.png" alt="Settings" className="w-6 h-6" />
             </button>
 
             <button
               className="w-7 h-7 flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity"
               title="Info"
             >
-              <img
-                src="/assets/icon-info.png"
-                alt="Info"
-                className="w-6 h-6"
-              />
+              <img src="/assets/icon-info.png" alt="Info" className="w-6 h-6" />
             </button>
 
-            {/* ── Pencil / Edit Profile button ── */}
+            {/* Edit Profile */}
             <button
               className="w-7 h-7 flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity"
               title="Edit Profile"
               onClick={() => setShowEditModal(true)}
             >
-              <img
-                src="/assets/icon-edit.svg"
-                alt="Edit Profile"
-                className="w-5 h-5"
-              />
+              <img src="/assets/icon-edit.svg" alt="Edit Profile" className="w-5 h-5" />
             </button>
 
             <button
@@ -88,11 +76,7 @@ export default function Navbar({ showIcons = true }: NavbarProps) {
                 navigate('/login');
               }}
             >
-              <img
-                src="/assets/icon-exit.png"
-                alt="Exit"
-                className="w-5 h-5"
-              />
+              <img src="/assets/icon-exit.png" alt="Exit" className="w-5 h-5" />
             </button>
           </div>
         )}
@@ -111,6 +95,11 @@ export default function Navbar({ showIcons = true }: NavbarProps) {
             <EditProfile onClose={() => setShowEditModal(false)} isModal />
           </div>
         </div>
+      )}
+
+      {/* ── Settings Modal ── */}
+      {showSettingsModal && (
+        <SettingsModal onClose={() => setShowSettingsModal(false)} />
       )}
     </>
   );
