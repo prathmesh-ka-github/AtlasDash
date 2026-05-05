@@ -72,7 +72,7 @@ app.post('/login', async (req, res, next) => {
     try {
       const dbuser = await auth.getUserFromEmail(user.email)
       console.log(dbuser);
-      
+
       let checkpass = auth.comparePass(user.password, dbuser.password)
       if (checkpass) {
         var token = jwt.sign({ id: dbuser._id }, 'secretkey');
@@ -140,18 +140,18 @@ app.post('/getuserdetails', async (req, res) => {
     if (token == undefined) {
       console.log("Token is undefined")
       res.status(401).json({
-        "err":"Token authentication unsuccessful",
-        "code":401
+        "err": "Token authentication unsuccessful",
+        "code": 401
       })
     } else {
       const user = await auth.getUser(token)
       // console.log("This gets back from db",user)
-      if(user !== null){
+      if (user !== null) {
         res.status(202).json(user)
       } else {
         res.status(401).json({
-          "err":"Token authentication unsuccessful",
-          "code":401
+          "err": "Token authentication unsuccessful",
+          "code": 401
         })
       }
     }
@@ -160,6 +160,55 @@ app.post('/getuserdetails', async (req, res) => {
   }
 })
 
-app.listen(port, () => {
+// ---------------------- Sockets ------------------------------
+io.on("connection", socket => {
+  console.log("new connection - ", socket.id);
+  socket.emit("connected", { socketId: socket.id });
+  const questions = singleplayer.generateQuestions()
+  let answers = []
+  let correct = []
+  let wrong = []
+  
+  let timerInterval = null;
+  socket.on('game-start', async() => {
+    const firstquestion = await singleplayer.getCountrybyID(questions[0])
+    console.log("first question is - ", firstquestion);
+    
+    socket.emit('nextquestion',{nextquestion: firstquestion})
+    console.log(`Game started by: ${socket.id}`);
+    if (timerInterval) {
+      clearInterval(timerInterval);
+    }
+    let countdown = 60;
+    timerInterval = setInterval(() => {
+      socket.emit('timer_update', { timeLeft: countdown });
+      if (countdown === 0) {
+        socket.emit('timer_done', { message: 'Time is up!' });
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      console.log("Timer started - ", countdown);
+
+      countdown--;
+    }, 1000);
+  });
+  socket.on("countryclick", async (data) => {
+    console.log("questions - ",questions);
+    console.log("answers - ",answers);
+    console.log("Country clicked:", data);
+    answers.push(Number(data.countryid));
+    ({ correct, wrong } = await singleplayer.compareanswers(questions, answers));
+    console.log("Correct:", correct);
+    console.log("Wrong:", wrong);
+    socket.emit("answerresult", { correct, wrong });
+  });
+
+  socket.on('disconnect', () => {
+    console.log(`Client disconnected with the id of: ${socket.id}`);
+    if (timerInterval) clearInterval(timerInterval);
+  });
+})
+
+server.listen(port, () => {
   console.log(`AtlasDash Server listening on port ${port}`);
 });

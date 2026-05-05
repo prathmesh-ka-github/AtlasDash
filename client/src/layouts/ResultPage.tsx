@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import {Navbar} from '../components/Navbar';
 
 // Dummy data — API call goes here
 // Each entry maps a country's data-country ID to whether it was answered correctly (true-green) or incorrectly (false-red)
@@ -21,7 +21,7 @@ const dummyResults: Record<string, boolean> = {
 
 const dummyScore = 226;
 
-export default function ResultPage() {
+export function ResultPage() {
   const navigate = useNavigate();
 
   // Color the SVG paths based on results

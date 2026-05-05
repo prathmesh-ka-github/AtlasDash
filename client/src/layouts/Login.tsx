@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'sonner';
-import Navbar from "../components/Navbar";
+import {Navbar} from "../components/Navbar";
 import "../styles/auth.css";
 import Cookies from "js-cookie";
 
@@ -14,7 +14,7 @@ type LoginErrors = {
   server?: string;
 };
 
-export default function Login() {
+export function Login() {
   const server = import.meta.env.VITE_SERVER_URL;
   const navigate = useNavigate();
 

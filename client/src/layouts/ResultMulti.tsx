@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import {Navbar} from '../components/Navbar';
 
 // Dummy data — replace with API call later
 const dummyPlayer1Results: Record<string, boolean> = {
@@ -41,7 +41,7 @@ const dummyLeaderboard = [
 
 type Toggle = 'Both' | 'player1' | 'player2';
 
-export default function ResultMulti() {
+export function ResultMulti() {
   const navigate = useNavigate();
   const [toggle, setToggle] = useState<Toggle>('Both');
 

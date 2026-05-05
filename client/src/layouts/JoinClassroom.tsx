@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import Navbar from '../components/Navbar';
+import {Navbar} from '../components/Navbar';
 
-export default function JoinClassroom() {
+export function JoinClassroom() {
   const navigate = useNavigate();
   const [classId, setClassId] = useState('');
   const [password, setPassword] = useState('');
