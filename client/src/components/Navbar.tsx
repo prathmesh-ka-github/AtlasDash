@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {EditProfile} from '../layouts/EditProfile';
 import Cookies from 'js-cookie';
-import {SettingsModal} from '../layouts/settingsModal';
+import {SettingsModal} from '../layouts/SettingsModal';
 
 interface NavbarProps {
   showIcons?: boolean;
