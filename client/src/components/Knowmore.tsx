@@ -33,6 +33,7 @@ const cards = [
 ];
 
 export function KnowMore() {
+  const navigate = useNavigate();
   return (
     <section className="w-full bg-white px-6 pb-40">
 

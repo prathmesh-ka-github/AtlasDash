@@ -67,11 +67,11 @@ app.get('/countrylookup', async (req, res) => {
 
 app.post('/login', async (req, res, next) => {
   const user = req.body;
-  // console.log(user)
+  console.log(user)
   if (await auth.checkUser(user)) {
     try {
       const dbuser = await auth.getUserFromEmail(user.email)
-      console.log(dbuser);
+      console.log("dbuser variable - ",dbuser);
 
       let checkpass = auth.comparePass(user.password, dbuser.password)
       if (checkpass) {
