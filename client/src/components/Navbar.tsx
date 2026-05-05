@@ -55,6 +55,7 @@ export default function Navbar({ showIcons = true }: NavbarProps) {
             <button
               className="w-7 h-7 flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity"
               title="Info"
+              onClick={() => navigate('/game-info')}
             >
               <img src="/assets/icon-info.png" alt="Info" className="w-6 h-6" />
             </button>
