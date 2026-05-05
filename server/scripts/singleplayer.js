@@ -21,6 +21,16 @@ async function getCountries() {
     }
 }
 
+async function getCountrybyID(id) {
+    try {
+        console.log("Finding country with the id of ", id)
+        const data = await countryLookup.findOne({ tag: id})
+        return data
+    } catch (err) {
+        console.error(err)
+    }
+}
+
 async function generateCountryList(){
     // const countries = getCountries()
     let generatedCountries = []
@@ -43,6 +53,21 @@ async function creategame(){
     
 }
 
+async function compareanswers(questions, answers) {
+  const correct = [];
+  const wrong = [];
+
+  for (let i = 0; i < answers.length; i++) {
+    if (questions[i] === answers[i]) {
+      correct.push(answers[i]);
+    } else {
+      wrong.push(answers[i]);
+    }
+  }
+
+  return { correct, wrong };
+}
+
 function generateQuestions() {
     const pool = Array.from({ length: 109 }, (_, i) => i + 1);
     for (let i = pool.length - 1; i > 0; i--) {
@@ -53,4 +78,4 @@ function generateQuestions() {
 }
 
 
-module.exports = { getCountries, generateQuestions};
+module.exports = { getCountries, generateQuestions, getCountrybyID, compareanswers};

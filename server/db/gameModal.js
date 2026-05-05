@@ -12,6 +12,11 @@ const gameSchema = new mongoose.Schema({
         default: 0
     },
 
+    socketID:{
+        type: String,
+        required: true
+    },
+
     questionSet:{
         type: Array,
         required: true,
