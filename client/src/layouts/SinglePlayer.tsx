@@ -23,7 +23,7 @@ export function SinglePlayer() {
   const [_connected, setConnected] = useState(false);
   const [socketId, setSocketId] = useState<string | null>(null);
   useEffect(() => {
-    socketRef.current = io("http://localhost:3000");
+    socketRef.current = io(server);
     socketRef.current?.on("connected", ({ socketId }) => {
       setSocketId(socketId);
       console.log("My socket ID:", socketId);
