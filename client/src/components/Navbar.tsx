@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {EditProfile} from '../layouts/EditProfile';
 import Cookies from 'js-cookie';
-import EditProfile from '../layouts/EditProfile';
 
 interface NavbarProps {
   showIcons?: boolean;
 }
 
-export default function Navbar({ showIcons = true }: NavbarProps) {
+export function Navbar({ showIcons = true }: NavbarProps) {
   const navigate = useNavigate();
   const [showEditModal, setShowEditModal] = useState(false);
 

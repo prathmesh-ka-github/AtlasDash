@@ -30,7 +30,7 @@ const cards = [
   },
 ];
 
-export default function KnowMore() {
+export function KnowMore() {
   return (
     <section className="w-full bg-white px-6 pb-40">
 

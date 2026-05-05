@@ -29,7 +29,7 @@ const faqData = [
   },
 ];
 
-export default function FAQs() {
+export function FAQs() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const handleToggle = (index: number) => {

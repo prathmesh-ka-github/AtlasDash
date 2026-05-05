@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import '../styles/editprofile.css';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import {Navbar} from '../components/Navbar';
+import {Footer} from '../components/Footer';
 
 interface EditProfileProps {
   onClose?: () => void;
   isModal?: boolean;
 }
 
-export default function EditProfile({ onClose, isModal = false }: EditProfileProps) {
+export function EditProfile({ onClose, isModal = false }: EditProfileProps) {
   const navigate = useNavigate();
   const server = import.meta.env.VITE_SERVER_URL;
 

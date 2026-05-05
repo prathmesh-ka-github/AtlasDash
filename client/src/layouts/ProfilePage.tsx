@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import '../styles/profilepage.css';
-import Footer from '../components/Footer';
-import Navbar from '../components/Navbar';
-import EditProfile from '../layouts/EditProfile';
+import {Footer} from '../components/Footer';
+import {Navbar} from '../components/Navbar';
+import {EditProfile} from '../layouts/EditProfile';
 
 type UserProfile = {
   gender?: string;
@@ -36,7 +36,7 @@ const HARDCODED_GAME_HISTORY = [
   { score: '89', mode: 'M', team: 'Rishikesh & Jyotsana',  date: '03/22/26' },
 ];
 
-export default function ProfilePage() {
+export function ProfilePage() {
   const navigate = useNavigate();
   const server = import.meta.env.VITE_SERVER_URL;
 
