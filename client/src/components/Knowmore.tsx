@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 const cards = [
   {
     title: 'Objective',
@@ -36,18 +38,22 @@ export function KnowMore() {
 
       {/* TITLE */}
       <h2
-        className="text-center text-3xl font-bold text-gray-900 mb-1"
+        className="text-center text-3xl font-bold text-gray-900 mb-4"
         style={{ fontFamily: '"Inter", sans-serif' }}
       >
         About the Game
       </h2>
 
-      <p
-        className="text-center text-sm text-gray-500 mb-10"
+      {/* CLICK TO KNOW MORE — styled as a link, not a button */}
+      <div className="text-center mt-3 mb-10">
+      <span
+        onClick={() => navigate('/game-info')}
+        className="inline-block text-blue-500 underline hover:text-blue-700 transition-colors duration-200"
         style={{ fontFamily: '"Inter", sans-serif' }}
       >
-        Click to know more
-      </p>
+      Click to Know More
+      </span>
+      </div>
 
       {/* CARDS */}
       <div className="grid grid-cols-3 gap-16 max-w-7xl mx-auto">
@@ -58,26 +64,23 @@ export function KnowMore() {
                        transition-all duration-200 hover:shadow-md hover:scale-[1.02]"
             style={{ backgroundColor: '#CEFF9C' }}
           >
-            {/* TITLE */}
             <h3
-             className="text-lg font-bold text-black"
-             style={{
-             marginBottom: '20px',   // force spacing (works 100%)
-             fontFamily: '"Inter", sans-serif'
-             }}
->
-             {card.title}
-             </h3>
+              className="text-lg font-bold text-black"
+              style={{
+                marginBottom: '20px',
+                fontFamily: '"Inter", sans-serif'
+              }}
+            >
+              {card.title}
+            </h3>
 
-            {/* DESCRIPTION */}
-             <p
-               className="text-sm text-gray-800 leading-7"
-               style={{
+            <p
+              className="text-sm text-gray-800 leading-7"
+              style={{
                 textAlign: 'justify',
                 fontFamily: '"Inter", sans-serif'
               }}
-              >
-              
+            >
               {card.description}
             </p>
           </div>

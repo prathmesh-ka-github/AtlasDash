@@ -46,6 +46,7 @@ function App() {
         <Route path="/result" element={<ResultPage />} />
         <Route path="/resultmulti" element={<ResultMulti />} />
         <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/game-info" element={<GameInfo />} />
 
       </Routes>
     </Router>
