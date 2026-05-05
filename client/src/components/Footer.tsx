@@ -1,4 +1,9 @@
+import { useNavigate } from 'react-router-dom';
+
 export default function Footer() {
+
+  const navigate = useNavigate();
+
   return (
     <footer className="w-full px-10 py-8 mt-16 bg-[#A2E260]">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -29,6 +34,11 @@ export default function Footer() {
               key={link}
               href="#"
               className="text-sm text-gray-900 hover:text-gray-900 transition-colors duration-200 font-Inter"
+              onClick={(e) => {
+                e.preventDefault();
+                if (link === 'GitHub') window.open('https://github.com/prathmesh-ka-github/AtlasDash', '_blank');
+                if (link === 'FAQs') navigate('/Faqs');
+              }}
             >
               {link}
             </a>
