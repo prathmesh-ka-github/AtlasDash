@@ -68,6 +68,11 @@ async function compareanswers(questions, answers) {
   return { correct, wrong };
 }
 
+async function getnextquestion(questions,answers){
+    const remainingquestions = questions.slice(answers.length)
+    return remainingquestions[0]
+}
+
 function generateQuestions() {
     const pool = Array.from({ length: 109 }, (_, i) => i + 1);
     for (let i = pool.length - 1; i > 0; i--) {
@@ -77,5 +82,10 @@ function generateQuestions() {
     return pool.slice(0, 50); // This will return just 50 numbers
 }
 
+async function calculatescore(correct, wrong){
+    let score = (5 * correct.length) - wrong.length
+    return score
+}
 
-module.exports = { getCountries, generateQuestions, getCountrybyID, compareanswers};
+
+module.exports = { getCountries, generateQuestions, getCountrybyID, compareanswers, getnextquestion, calculatescore};

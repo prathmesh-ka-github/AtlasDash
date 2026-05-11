@@ -11,8 +11,10 @@ export function SinglePlayer() {
 
   const navigate = useNavigate();
   const [fadeOut, setFadeOut] = useState(false);
-  const [Score, _setScore] = useState(0);
+  const [Score, setScore] = useState(0);
   const [Question, setQuestion] = useState("");
+  const [CorrectAnswers, setCorrectAnswers] = useState([]);
+  const [WrongAnswers, setWrongAnswers] = useState([]);
   const svgRef = useRef<SVGSVGElement>(null);
   // console.log('Raw cookie string:', document.cookie);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -36,14 +38,20 @@ export function SinglePlayer() {
     socketRef.current.on("disconnect", () => setConnected(false));
     socketRef.current.on("timer_update", ({ timeLeft }) => setTimeLeft(timeLeft));
     socketRef.current.on("timer_done", () => setIsDone(true));
+    socketRef.current.on("firstquestion", ({nextquestion}) => setQuestion(nextquestion.name));
+    socketRef.current.on("answerresult", ({correct, wrong}) => {
+      setCorrectAnswers(correct)
+      setWrongAnswers(wrong)
+    });
+
     socketRef.current.on("nextquestion", ({nextquestion}) => setQuestion(nextquestion.name));
+    socketRef.current.on("calculatescore", ({score}) => setScore(score));
 
     return () => {
       socketRef.current?.disconnect(); 
       // cleanup on unmount
     };
   }, []);
-
 
   const formatTime = (time: number) => String(time).padStart(2, '0');
 
@@ -122,14 +130,35 @@ export function SinglePlayer() {
     authenticateUser();
   }, [navigate]);
 
+
+useEffect(() => {
+  // document.querySelectorAll<SVGPathElement>(".svggroup").forEach((path) => {
+  //   path.style.fill = "#ECECEC";
+  // });
+  WrongAnswers.forEach((id) => {
+    document.querySelectorAll<SVGPathElement>(`[data-country="${id}"]`).forEach((path) => {
+      path.style.fill = "#FF5023";
+    });
+  });
+
+  CorrectAnswers.forEach((id) => {
+    document.querySelectorAll<SVGPathElement>(`[data-country="${id}"]`).forEach((path) => {
+      path.style.fill = "#A2E260";
+    });
+  });
+
+}, [CorrectAnswers, WrongAnswers]);
+
   const handleMapClick = (e: any) => {
     const path = e.target.closest('path.svggroup');
     if (path !== null) {
       const countryid = path.dataset.country
-      console.log('Clicked: ', countryid);
-      setSelectedId(path.dataset.country ?? null);
-      socketRef.current?.emit("countryclick", { countryid, authtoken });
-      console.log(path);
+      if (countryid !=="") {
+        console.log('Clicked: ', countryid);
+        setSelectedId(path.dataset.country ?? null);
+        socketRef.current?.emit("countryclick", { countryid, authtoken });
+        console.log(path);
+      }
     }
   };
 
@@ -166,7 +195,7 @@ export function SinglePlayer() {
             <path className='svggroup' data-country="" d="M1438.35 472.05L1440.55 469.65L1445.15 466.05L1445.05 469.25L1444.95 473.35L1442.25 473.15L1441.15 475.35L1438.35 472.05Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="134" d="M1294.05 322.75L1296.65 324.85L1297.15 328.75L1292.65 328.95L1287.95 328.55L1284.75 329.55L1279.25 327.05L1278.85 325.85L1281.45 321.05L1284.05 319.45L1288.35 320.85L1291.25 321.05L1294.05 322.75Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="48" d="M932.85 614.95L934.75 620.05L935.85 621.25L937.45 624.95L943.55 631.95L945.85 632.65L945.75 634.95L947.25 639.05L951.55 640.05L954.95 642.95L946.85 647.65L941.65 652.45L939.65 656.75L937.85 659.15L934.85 659.65L933.65 662.75L933.05 664.75L929.45 666.15L924.95 665.85L922.45 664.05L920.15 663.35L917.35 664.75L915.85 667.85L913.15 669.75L910.35 672.65L906.35 673.35L905.25 671.05L905.85 667.15L902.85 661.05L901.45 660.05L902.05 641.35L907.55 641.15L908.35 618.25L912.55 618.05L921.25 615.75L923.25 618.45L926.95 615.95H928.65L931.85 614.45L932.85 614.95Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-            <path className='svggroup' data-country="44" d="M926.55 445.75L930.45 448.25L933.55 450.85L933.65 452.95L937.55 456.25L939.95 459.05L941.35 462.85L945.65 465.45L946.55 467.45L944.75 468.15L941.05 468.05L936.85 467.35L934.75 467.85L933.85 469.45L932.05 469.65L929.85 468.25L923.55 471.45L920.95 470.85L920.15 471.35L918.55 475.25L914.25 473.95L910.15 473.35L906.55 470.95L901.85 468.75L898.85 470.85L896.65 474.05L896.15 478.55L892.55 478.25L888.65 477.15L885.35 480.55L882.35 486.55L881.75 484.65L881.45 481.75L878.85 479.65L876.75 476.35L876.25 474.05L873.55 470.65L874.05 468.75L873.45 466.05L873.85 461.05L875.25 459.95L878.05 453.45L882.65 452.95L883.65 451.25L884.65 451.45L886.05 452.85L893.15 450.45L895.55 447.95L898.45 445.65L897.85 443.45L899.45 442.85L904.95 443.25L910.15 440.25L914.15 433.25L916.95 430.65L920.55 429.55L921.25 432.25L924.55 436.25V438.95L923.75 441.55L924.15 443.55L926.05 445.45L926.55 445.75Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path className='svggroup' data-country="45" d="M926.55 445.75L930.45 448.25L933.55 450.85L933.65 452.95L937.55 456.25L939.95 459.05L941.35 462.85L945.65 465.45L946.55 467.45L944.75 468.15L941.05 468.05L936.85 467.35L934.75 467.85L933.85 469.45L932.05 469.65L929.85 468.25L923.55 471.45L920.95 470.85L920.15 471.35L918.55 475.25L914.25 473.95L910.15 473.35L906.55 470.95L901.85 468.75L898.85 470.85L896.65 474.05L896.15 478.55L892.55 478.25L888.65 477.15L885.35 480.55L882.35 486.55L881.75 484.65L881.45 481.75L878.85 479.65L876.75 476.35L876.25 474.05L873.55 470.65L874.05 468.75L873.45 466.05L873.85 461.05L875.25 459.95L878.05 453.45L882.65 452.95L883.65 451.25L884.65 451.45L886.05 452.85L893.15 450.45L895.55 447.95L898.45 445.65L897.85 443.45L899.45 442.85L904.95 443.25L910.15 440.25L914.15 433.25L916.95 430.65L920.55 429.55L921.25 432.25L924.55 436.25V438.95L923.75 441.55L924.15 443.55L926.05 445.45L926.55 445.75Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="2" d="M471.15 202.85L474.55 203.75L479.25 203.55L475.95 206.15L473.95 206.55L468.45 203.85L467.85 201.75L470.35 199.85L471.15 202.85Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="2" d="M485.55 186.85L483.15 186.95L477.35 185.05L473.85 182.05L475.75 181.55L481.65 183.15L485.85 185.75L485.55 186.85Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="2" d="M177.65 190.55L174.55 191.45L168.25 188.65V186.45L165.35 184.25L165.65 182.45L161.35 181.35L161.95 177.95L163.45 176.55L167.55 177.85L169.95 178.85L174.05 179.45L174.25 181.65L174.65 184.55L177.85 187.15L177.65 190.55Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -360,7 +389,7 @@ export function SinglePlayer() {
             <path className='svggroup' data-country="50" d="M1089.05 394.15L1085.05 395.85L1084.15 398.75V400.95L1078.75 403.65L1069.95 406.65L1065.25 411.15L1062.75 411.55L1061.05 411.15L1057.85 413.85L1054.35 415.05L1049.65 415.35L1048.25 415.75L1047.15 417.45L1045.65 417.95L1044.85 419.55L1042.05 419.35L1040.35 420.25L1036.35 419.95L1034.75 416.15V412.65L1033.75 410.75L1032.45 406.05L1030.65 403.45L1031.75 403.05L1031.05 400.15L1031.65 398.95L1031.25 396.15L1033.65 394.05L1032.85 391.35L1034.15 388.25L1036.55 389.85L1038.05 389.25L1044.45 389.15L1045.55 389.75L1051.05 390.45L1053.15 390.15L1054.65 392.25L1057.25 391.15L1060.75 384.45L1065.75 381.55L1081.65 379.05L1086.85 389.65L1089.05 394.15Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="39" d="M967.35 556.05L967.65 556.25L969.85 557.35L973.45 558.45L976.65 560.35L979.25 563.25L980.55 568.65L979.55 570.35L978.25 575.55L979.15 580.95L977.35 583.15L975.35 589.15L978.25 590.75L961.05 596.05L961.45 600.65L957.15 601.55L953.85 604.05L953.05 606.25L951.05 606.85L945.95 612.05L942.75 616.25L940.85 616.35L939.05 615.65L932.85 614.95L931.85 614.45V613.95L929.65 612.45L926.05 612.15L921.45 613.55L917.85 609.55L914.25 604.35L915.05 583.85L926.75 583.95L926.35 581.75L927.25 579.35L926.35 576.35L927.05 573.25L926.45 571.25L928.35 571.35L928.65 573.35L931.35 573.25L934.85 573.85L936.75 576.75L941.15 577.65L944.65 575.65L945.85 578.95L950.15 579.85L952.15 582.65L954.35 586.15H958.65L958.45 579.25L956.85 580.45L952.95 577.95L951.45 576.75L952.35 570.35L953.45 562.75L952.25 559.95L953.95 555.85L955.45 555.05L963.15 553.95L964.05 554.25L963.75 555.65L965.65 556.15L966.85 557.45L967.85 557.15L967.35 556.05Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="61" d="M964.65 643.95L961.75 643.25L959.85 644.05L957.15 642.95H954.95L951.55 640.05L947.25 639.05L945.75 634.95L945.85 632.65L943.55 631.95L937.45 624.95L935.85 621.25L934.75 620.05L932.85 614.95L939.05 615.65L940.85 616.35L942.75 616.25L945.95 612.05L951.05 606.85L953.05 606.25L953.85 604.05L957.15 601.55L961.45 600.65L961.65 603.05L966.35 602.95L968.95 604.25L970.05 605.85L972.75 606.35L975.55 608.35L975.15 616.55L973.85 620.95L973.45 625.75L974.25 627.65L973.35 631.45L972.55 632.05L970.85 636.65L964.65 643.95Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-            <path className='svggroup' data-country="44" d="M1027.35 511.85L1024.05 506.55L1023.85 483.15L1028.75 475.95L1030.25 473.85L1033.85 473.75L1038.85 469.25L1046.15 468.95L1061.75 449.65L1056.95 449.75L1038.25 442.15L1036.05 439.85L1033.85 436.75L1031.65 433.15L1032.85 430.95L1034.75 427.45L1036.65 428.65L1037.85 431.35L1040.55 434.05H1043.35L1048.55 432.35L1054.65 431.65L1059.55 429.65L1062.35 429.25L1064.35 428.05L1067.55 427.85L1069.35 427.65L1071.85 426.75L1074.85 426.05L1077.35 423.85H1079.55L1079.75 425.65L1079.35 429.35L1079.55 432.75L1078.45 435.05L1077.05 442.05L1074.65 449.15L1071.35 457.35L1066.75 466.75L1062.05 473.95L1055.45 482.75L1049.85 487.95L1041.45 494.35L1036.15 499.15L1029.95 506.95L1028.65 510.35L1027.35 511.85Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path className='svggroup'data-niga="nigaa" data-country="44" d="M1027.35 511.85L1024.05 506.55L1023.85 483.15L1028.75 475.95L1030.25 473.85L1033.85 473.75L1038.85 469.25L1046.15 468.95L1061.75 449.65L1056.95 449.75L1038.25 442.15L1036.05 439.85L1033.85 436.75L1031.65 433.15L1032.85 430.95L1034.75 427.45L1036.65 428.65L1037.85 431.35L1040.55 434.05H1043.35L1048.55 432.35L1054.65 431.65L1059.55 429.65L1062.35 429.25L1064.35 428.05L1067.55 427.85L1069.35 427.65L1071.85 426.75L1074.85 426.05L1077.35 423.85H1079.55L1079.75 425.65L1079.35 429.35L1079.55 432.75L1078.45 435.05L1077.05 442.05L1074.65 449.15L1071.35 457.35L1066.75 466.75L1062.05 473.95L1055.45 482.75L1049.85 487.95L1041.45 494.35L1036.15 499.15L1029.95 506.95L1028.65 510.35L1027.35 511.85Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="159" d="M903.05 230.05L901.85 230.35L898.95 231.35L898.85 232.65L898.15 232.55L897.55 230.25L896.25 229.55L895.05 227.85L895.85 226.45L897.05 226.05L897.55 223.95L898.45 223.55L899.25 224.45L900.25 224.85L901.05 225.85L901.95 226.15L903.05 227.35L903.75 227.25L903.35 228.85L902.75 229.55L903.05 230.05Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="25" d="M964.65 643.95L966.85 652.95L967.95 657.55L966.55 664.65L966.95 666.95L964.25 665.85L962.55 666.25L961.95 668.15L960.25 670.55L960.15 672.75L963.25 676.25L966.45 675.55L967.85 672.75H971.95L970.25 677.45L969.25 682.75L967.55 685.65L963.55 688.95L962.45 689.85L959.85 693.15L958.05 696.45L954.55 701.05L947.85 707.65L943.75 711.45L939.45 714.45L933.55 716.85L930.85 717.25L929.95 719.05L926.75 718.05L924.05 719.25L918.35 718.05L915.05 718.85L912.85 718.45L907.05 721.05L902.45 722.05L898.95 724.45L896.55 724.65L894.45 722.35L892.65 722.25L890.45 719.35L890.15 720.25L889.55 718.55L889.85 714.75L888.35 710.45L890.15 709.25L890.25 704.35L886.95 698.35L884.55 692.95V692.85L880.95 684.55L883.75 681.35L885.75 683.15L886.55 685.85L889.05 686.35L892.45 687.55L895.35 687.05L900.35 683.75L901.45 660.05L902.85 661.05L905.85 667.15L905.25 671.05L906.35 673.35L910.35 672.65L913.15 669.75L915.85 667.85L917.35 664.75L920.15 663.35L922.45 664.05L924.95 665.85L929.45 666.15L933.05 664.75L933.65 662.75L934.85 659.65L937.85 659.15L939.65 656.75L941.65 652.45L946.85 647.65L954.95 642.95H957.15L959.85 644.05L961.75 643.25L964.65 643.95ZM944.35 697.15L945.45 695.15L948.55 694.15L949.65 692.05L951.55 688.95L949.85 686.95L947.65 684.95L944.95 686.35L941.85 688.85L938.65 692.85L942.35 697.85L944.35 697.15Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
             <path className='svggroup' data-country="76" d="M1691.45 763.65L1690.65 766.25L1696.25 763.65L1695.75 766.35L1693.65 769.05L1689.45 771.95L1682.35 776.65L1677.65 779.25L1677.05 782.25L1673.05 782.35L1666.75 784.75L1662.05 788.85L1653.85 795.25L1647.55 798.05L1643.55 799.85L1638.95 799.75L1637.45 797.65L1632.35 797.25L1633.35 794.85L1639.85 790.25L1651.25 783.95L1655.55 782.75L1661.15 780.35L1668.15 777.05L1673.85 773.75L1679.85 769.05L1682.95 767.45L1686.45 763.85L1692.25 760.95L1691.45 763.65Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -426,7 +455,10 @@ export function SinglePlayer() {
           <div className="countryname-wrapper flex flex-col w-full justify-center items-center ">
             <div className="countryname text-center fixed bottom-5">
               <div className="instructions block font-Changa">Click on the country</div>
-              <div className="countryname z-10 right-0 block text-5xl font-BalooBhai font-extrabold">{Question} {selectedId && <p>{selectedId}</p>}</div>
+              <div className="countryname z-10 right-0 block text-5xl font-BalooBhai font-extrabold">
+                {Question} 
+                {selectedId && <p>{selectedId}</p>}
+              </div>
             </div>
           </div>
           <div className='playmode-wrapper flex items-center font-Changa text-2xl'>
