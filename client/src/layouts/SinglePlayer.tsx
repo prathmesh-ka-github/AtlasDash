@@ -449,7 +449,7 @@ useEffect(() => {
         <div className="gamepanels">
           <div className="score-wrapper flex items-end w-full font-Changa text-2xl">
             <div className='score fixed bottom-5 left-5'>
-              Score -&nbsp;{Score}
+              Score &nbsp;{Score}
             </div>
           </div>
           <div className="countryname-wrapper flex flex-col w-full justify-center items-center ">
@@ -457,7 +457,7 @@ useEffect(() => {
               <div className="instructions block font-Changa">Click on the country</div>
               <div className="countryname z-10 right-0 block text-5xl font-BalooBhai font-extrabold">
                 {Question} 
-                {selectedId && <p>{selectedId}</p>}
+                {/* {selectedId && <p>{selectedId}</p>} */}
               </div>
             </div>
           </div>
