@@ -48,7 +48,7 @@ app.get('/users', async (req, res) => {
     let data = await auth.getAllUsers()
     // console.log(data)
 
-    console.log("Users returned:", data);
+    // console.log("Users returned:", data);
     console.log("Count:", data.length);
     res.status(200).json(data);
   } catch (err) {
