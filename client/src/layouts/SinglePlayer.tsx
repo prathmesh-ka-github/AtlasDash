@@ -17,7 +17,7 @@ export function SinglePlayer() {
   const [WrongAnswers, setWrongAnswers] = useState([]);
   const svgRef = useRef<SVGSVGElement>(null);
   // console.log('Raw cookie string:', document.cookie);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [_selectedId, setSelectedId] = useState<string | null>(null);
 
   const socketRef = useRef<Socket | null>(null);
   const [timeLeft, setTimeLeft] = useState(60);
