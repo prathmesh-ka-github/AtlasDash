@@ -44,7 +44,7 @@ function App() {
         <Route path="/create-classroom" element={<CreateClassroom />} />
         <Route path="/join-classroom" element={<JoinClassroom />} />
         <Route path="/classroom" element={<ClassroomLobby />} />
-        <Route path="/result" element={<ResultPage />} />
+        <Route path="/result/:gameID" element={<ResultPage />} />
         <Route path="/resultmulti" element={<ResultMulti />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/game-info" element={<GameInfo />} />
