@@ -44,7 +44,6 @@ export function ProfilePage() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [socketID, setSocketID] = useState('');
   const [gameHistory, setGameHistory] = useState([]);
 
   useEffect(() => {
