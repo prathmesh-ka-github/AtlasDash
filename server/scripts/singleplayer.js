@@ -12,6 +12,8 @@ const { error } = require("console")
 const connectionstring = process.env.DB_CONNECTION_STRING;
 mongoose.connect(connectionstring).then(() => console.log('✅ singleplayer module Connected to MongoDB'))
 
+const Game = require('../db/gameModal');
+
 async function getCountries() {
     try {
         const data = await countryLookup.find()
@@ -48,9 +50,24 @@ async function generateCountryList(){
     console.log(generatedCountries);
 }
 
-async function creategame(){
-    console.log("Creating new game");
-    
+async function createGame(gameObj){
+    try {
+        console.log("Creating new game");
+        await Game.create(gameObj)
+        console.log("Game created successfully in the DB");
+    } catch (error) {
+        console.log("An error occured while creating the game - ", error);
+    }
+}
+
+async function updateScore(score, socketID){
+    try {
+        console.log("Updating score of ", socketID, " to ", score)
+        await Game.updateOne({socketID: socketID}, {$set:{score:score}})
+        console.log("Score updated successfully of ", socketID, " to ", score)
+    } catch (error) {
+        console.log("An error occured while updating score - ", error)
+    }
 }
 
 async function compareanswers(questions, answers) {
@@ -88,4 +105,4 @@ async function calculatescore(correct, wrong){
 }
 
 
-module.exports = { getCountries, generateQuestions, getCountrybyID, compareanswers, getnextquestion, calculatescore};
+module.exports = { getCountries, generateQuestions, getCountrybyID, compareanswers, getnextquestion, calculatescore, createGame};

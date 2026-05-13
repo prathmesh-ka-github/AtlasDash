@@ -177,10 +177,12 @@ io.on("connection", socket => {
 
   socket.on('game-start', async() => {
     const firstquestion = await singleplayer.getCountrybyID(questions[0])
+
+    console.log(`Game started by: ${socket.id}`);
     console.log("first question is - ", firstquestion);
     
     socket.emit('firstquestion',{nextquestion: firstquestion})
-    console.log(`Game started by: ${socket.id}`);
+
     if (timerInterval) {
       clearInterval(timerInterval);
     }
@@ -192,19 +194,24 @@ io.on("connection", socket => {
         clearInterval(timerInterval);
         timerInterval = null;
       }
-      console.log("Timer started - ", countdown);
+      console.log("Timer - ", countdown);
 
       countdown--;
     }, 1000);
   });
+
   socket.on("countryclick", async (data) => {
     console.log("questions - ",questions);
     console.log("answers - ",answers);
     console.log("Country clicked:", data);
+    // data contains "countryid" and "authtoken"
+
     answers.push(Number(data.countryid));
     ({ correct, wrong } = await singleplayer.compareanswers(questions, answers));
+
     console.log("Correct:", correct);
     console.log("Wrong:", wrong);
+
     socket.emit("answerresult", { correct, wrong });
     const nextquestion = await singleplayer.getnextquestion(questions,answers)
     const nextquestiondata = await singleplayer.getCountrybyID(nextquestion)
