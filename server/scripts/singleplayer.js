@@ -55,18 +55,31 @@ async function createGame(gameObj){
         console.log("Creating new game");
         await Game.create(gameObj)
         console.log("Game created successfully in the DB");
+        return 1;
     } catch (error) {
         console.log("An error occured while creating the game - ", error);
+        return 0
     }
 }
 
 async function updateScore(score, socketID){
     try {
-        console.log("Updating score of ", socketID, " to ", score)
+        // console.log("Updating score of ", socketID, " to ", score)
         await Game.updateOne({socketID: socketID}, {$set:{score:score}})
-        console.log("Score updated successfully of ", socketID, " to ", score)
+        // console.log("Score updated successfully of ", socketID, " to ", score)
     } catch (error) {
         console.log("An error occured while updating score - ", error)
+    }
+}
+async function updateAnswers(answers, socketID){
+    try {
+        // console.log("Updating answers of ", socketID, " to ", answers)
+        await Game.updateOne({socketID: socketID}, {$set:{answers:answers}})
+        // console.log("Answers updated successfully of ", socketID, " to ", answers)
+        return 1
+    } catch (error) {
+        console.log("An error occured while updating answers - ", error)
+        return 0
     }
 }
 
@@ -105,4 +118,4 @@ async function calculatescore(correct, wrong){
 }
 
 
-module.exports = { getCountries, generateQuestions, getCountrybyID, compareanswers, getnextquestion, calculatescore, createGame};
+module.exports = { getCountries, generateQuestions, getCountrybyID, compareanswers, getnextquestion, calculatescore, createGame, updateScore, updateAnswers};

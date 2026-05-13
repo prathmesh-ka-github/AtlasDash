@@ -1,10 +1,14 @@
 const mongoose = require("mongoose")
 
 const gameSchema = new mongoose.Schema({
-    userID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user",
-        required: true
+    username: {
+        type: String,
+        lowercase: true,
+        minlength: 3,
+        maxlength: 20,
+        trim: true,
+        required: true,
+        ref: "user"
     },
 
     score: {
@@ -12,24 +16,21 @@ const gameSchema = new mongoose.Schema({
         default: 0
     },
 
-    socketID:{
+    socketID: {
         type: String,
         required: true
     },
 
-    questionSet:{
+    questionSet: {
         type: Array,
         required: true,
     },
 
-    answers:[{
-        country:{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "country"
-            },
-        value: Boolean,
-        _id: false
-    }],
+    answers: {
+        type: Array,
+        required: true,
+        default: [],
+    },
 }, { timestamps: true });
 
-module.exports = mongoose.model("game", gameSchema)
+module.exports = mongoose.model("games", gameSchema)

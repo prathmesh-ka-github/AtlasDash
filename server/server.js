@@ -74,7 +74,7 @@ app.post('/login', async (req, res, next) => {
   if (await auth.checkUser(user)) {
     try {
       const dbuser = await auth.getUserFromEmail(user.email)
-      console.log("dbuser variable - ",dbuser);
+      console.log("dbuser variable - ", dbuser);
 
       let checkpass = auth.comparePass(user.password, dbuser.password)
       if (checkpass) {
@@ -171,17 +171,32 @@ io.on("connection", socket => {
   let answers = []
   let correct = []
   let wrong = []
-  let score = 0
-  
+
   let timerInterval = null;
 
-  socket.on('game-start', async() => {
+  socket.on('game-start', async (data) => {
     const firstquestion = await singleplayer.getCountrybyID(questions[0])
-
+    const user = await auth.getUser(data.authtoken)
     console.log(`Game started by: ${socket.id}`);
-    console.log("first question is - ", firstquestion);
+    const gameData = {
+      "username": user.username,
+      "score": 0,
+      "socketID": socket.id,
+      "questionSet": questions,
+      "answers": []
+    }
+    // console.log("gameData is - ",gameData);
     
-    socket.emit('firstquestion',{nextquestion: firstquestion})
+    let creatingGame = await singleplayer.createGame(gameData)
+    if (creatingGame) {
+      console.log("New game created at socketid ", socket.id, " and with gameData - ", gameData)
+    }
+    else {
+      console.log("Game creationg failed");
+    }
+    // console.log("first question is - ", firstquestion);
+
+    socket.emit('firstquestion', { nextquestion: firstquestion })
 
     if (timerInterval) {
       clearInterval(timerInterval);
@@ -201,24 +216,26 @@ io.on("connection", socket => {
   });
 
   socket.on("countryclick", async (data) => {
-    console.log("questions - ",questions);
-    console.log("answers - ",answers);
-    console.log("Country clicked:", data);
+    // console.log("questions - ", questions);
+    // console.log("answers - ", answers);
+    // console.log("Country clicked:", data);
     // data contains "countryid" and "authtoken"
 
     answers.push(Number(data.countryid));
+    await singleplayer.updateAnswers(answers, socket.id);
     ({ correct, wrong } = await singleplayer.compareanswers(questions, answers));
 
-    console.log("Correct:", correct);
-    console.log("Wrong:", wrong);
+    // console.log("Correct:", correct);
+    // console.log("Wrong:", wrong);
 
     socket.emit("answerresult", { correct, wrong });
-    const nextquestion = await singleplayer.getnextquestion(questions,answers)
-    const nextquestiondata = await singleplayer.getCountrybyID(nextquestion)
-    socket.emit("nextquestion",{nextquestion: nextquestiondata})
+    const nextquestion = await singleplayer.getnextquestion(questions, answers);
+    const nextquestiondata = await singleplayer.getCountrybyID(nextquestion);
+    socket.emit("nextquestion", { nextquestion: nextquestiondata })
 
     const score = await singleplayer.calculatescore(correct, wrong)
-    socket.emit("calculatescore", {score: score})
+    await singleplayer.updateScore(score, socket.id);
+    socket.emit("calculatescore", { score: score })
   });
 
   socket.on('disconnect', () => {
