@@ -117,5 +117,14 @@ async function calculatescore(correct, wrong){
     return score
 }
 
+async function getGameData(gameID) {
+    try {
+        const gameData = Game.findOne({socketID: gameID})
+        return gameData
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-module.exports = { getCountries, generateQuestions, getCountrybyID, compareanswers, getnextquestion, calculatescore, createGame, updateScore, updateAnswers};
+
+module.exports = { getCountries, generateQuestions, getCountrybyID, compareanswers, getnextquestion, calculatescore, createGame, updateScore, updateAnswers, getGameData};

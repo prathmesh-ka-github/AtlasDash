@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const User = require("../db/userModal")
+const Game = require('../db/gameModal');
 
 require('dotenv').config(
     {
@@ -14,6 +15,7 @@ const mongoose = require("mongoose")
 const { error } = require("console")
 const connectionstring = process.env.DB_CONNECTION_STRING;
 mongoose.connect(connectionstring).then(() => console.log('✅ auth module Connected to MongoDB'))
+mongoose.connect(connectionstring).then(() => console.log('✅ singleplayer module Connected to MongoDB'))
 
 // We have to structure the User data after that we can properly alter these functions. We have to do DB arch design first.
 
@@ -88,9 +90,25 @@ async function updateToken(useremail, token){
     }
 }
 
+async function getGameHistory(authtoken) {
+    try {
+        var user = await getUser(authtoken);
+        
+        if (user == null) {
+            return null
+        }
+        else{
+            const games = await Game.find({username: user.username}).sort({ createdAt: -1 });
+            return games
+        }
+    } catch (err) {
+        console.error(err)
+    }
+}
+
 async function comparePass(userpass, dbpassword) {
     let result = bcrypt.compareSync(userpass, dbpassword)
     return result
 }
 
-module.exports = { checkUser, addUser, getAllUsers, getUser, getUserFromEmail, updateToken, comparePass };
+module.exports = { checkUser, addUser, getAllUsers, getUser, getUserFromEmail, updateToken, comparePass, getGameHistory };

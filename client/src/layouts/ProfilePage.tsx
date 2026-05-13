@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import '../styles/profilepage.css';
-import {Footer} from '../components/Footer';
-import {Navbar} from '../components/Navbar';
-import {EditProfile} from '../layouts/EditProfile';
+import { Footer } from '../components/Footer';
+import { Navbar } from '../components/Navbar';
+import { EditProfile } from '../layouts/EditProfile';
 
 type UserProfile = {
   gender?: string;
@@ -27,32 +27,31 @@ const HARDCODED_CLASSROOMS = [
 ];
 
 const HARDCODED_GAME_HISTORY = [
-  { score: '90', mode: 'S', team: 'Rishikesh',             date: '03/25/26' },
-  { score: '95', mode: 'M', team: 'Rishikesh & Nithin',    date: '03/25/26' },
+  { score: '90', mode: 'S', team: 'Rishikesh', date: '03/25/26' },
+  { score: '95', mode: 'M', team: 'Rishikesh & Nithin', date: '03/25/26' },
   { score: '80', mode: 'M', team: 'Rishikesh & Prathmesh', date: '03/24/26' },
-  { score: '82', mode: 'S', team: 'Rishikesh',             date: '03/24/26' },
-  { score: '86', mode: 'M', team: 'Rishikesh & Atharva',   date: '03/24/26' },
-  { score: '92', mode: 'M', team: 'Rishikesh & ABI',       date: '03/23/26' },
-  { score: '89', mode: 'M', team: 'Rishikesh & Jyotsana',  date: '03/22/26' },
+  { score: '82', mode: 'S', team: 'Rishikesh', date: '03/24/26' },
+  { score: '86', mode: 'M', team: 'Rishikesh & Atharva', date: '03/24/26' },
+  { score: '92', mode: 'M', team: 'Rishikesh & ABI', date: '03/23/26' },
+  { score: '89', mode: 'M', team: 'Rishikesh & Jyotsana', date: '03/22/26' },
 ];
 
 export function ProfilePage() {
+  const token = Cookies.get('authtoken');
   const navigate = useNavigate();
   const server = import.meta.env.VITE_SERVER_URL;
 
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [gameHistory, setGameHistory] = useState([]);
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const token = Cookies.get('authtoken');
-
       if (!token) {
         navigate('/login');
         return;
       }
-
       try {
         setLoading(true);
         setError('');
@@ -99,6 +98,25 @@ export function ProfilePage() {
 
     fetchProfile();
   }, [navigate, server]);
+
+  useEffect(() => {
+    const fetchGameHistory = async () => {
+      try {
+        const response = await fetch(`${server}/getgamehistory`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `authtoken ${Cookies.get('authtoken')}`
+          }
+        });
+        const data = await response.json();
+        setGameHistory(data);
+      } catch (error) {
+        console.error('Error fetching game history:', error);
+      }
+    };
+
+    fetchGameHistory();
+  }, []);
 
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -153,29 +171,12 @@ export function ProfilePage() {
           <p className="profile-bio">{HARDCODED_BIO}</p>
         </section>
 
-        {/* ── Classrooms ── */}
-{/* TODO: Replace with data.classrooms from API */}
-<section className="profile-section">
-  <h2 className="profile-section-title">Classrooms</h2>
-  <div className="classroom-scroll-wrap">
-    <div className="classroom-cards">
-      {HARDCODED_CLASSROOMS.map((c) => (
-        <div key={c.id} className="classroom-card">
-          <span className="classroom-card-name">{c.name}</span>
-        </div>
-      ))}
-      <button className="classroom-card classroom-card-add" title="Create new classroom">
-        <span className="classroom-card-add-icon">+</span>
-        <span className="classroom-card-add-text">New</span>
-      </button>
-    </div>
-  </div>
-</section>
 
         {/* ── Game History ── */}
         {/* TODO: Replace HARDCODED_GAME_HISTORY with data.gameHistory from API */}
         <section className="profile-section">
           <h2 className="profile-section-title">Game History</h2>
+
           <div className="game-history-wrap">
             <table className="game-history-table">
               <thead>
@@ -187,6 +188,15 @@ export function ProfilePage() {
                 </tr>
               </thead>
               <tbody>
+
+                {gameHistory.map((game:any, index) => (
+                  <tr key={index}>
+                    <td>{game.score}</td>
+                    <td>S</td>
+                    <td className='game-history-team'>{user?.name}</td>
+                    <td>{new Date(game.createdAt).toLocaleString()}</td>
+                  </tr>
+                ))}
                 {HARDCODED_GAME_HISTORY.map((game, index) => (
                   <tr key={index}>
                     <td>{game.score}</td>
@@ -203,10 +213,28 @@ export function ProfilePage() {
           </div>
         </section>
 
+        {/* ── Classrooms ── */}
+        {/* TODO: Replace with data.classrooms from API */}
+        <section className="profile-section">
+          <h2 className="profile-section-title">Classrooms</h2>
+          <div className="classroom-scroll-wrap">
+            <div className="classroom-cards">
+              {HARDCODED_CLASSROOMS.map((c) => (
+                <div key={c.id} className="classroom-card">
+                  <span className="classroom-card-name">{c.name}</span>
+                </div>
+              ))}
+              <button className="classroom-card classroom-card-add" title="Create new classroom">
+                <span className="classroom-card-add-icon">+</span>
+                <span className="classroom-card-add-text">New</span>
+              </button>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />
-       {/* ── Edit Profile Modal ── */}
+      {/* ── Edit Profile Modal ── */}
       {showEditModal && (
         <div
           className="edit-modal-overlay"

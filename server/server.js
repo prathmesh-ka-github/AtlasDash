@@ -163,6 +163,75 @@ app.post('/getuserdetails', async (req, res) => {
   }
 })
 
+app.post('/getgamehistory', async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (token == undefined) {
+      console.log("Token is undefined")
+      res.status(401).json({
+        "err": "Token authentication unsuccessful",
+        "code": 401
+      })
+    } else {
+      const gameHistory = await auth.getGameHistory(token);
+
+      // console.log(gameHistory);
+
+      // console.log("This gets back from db",user)
+
+      if (gameHistory !== null) {
+        res.status(202).json(gameHistory)
+      } else {
+        res.status(200).json({
+          "err": "No game history found",
+          "code": 200
+        })
+      }
+    }
+
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+
+app.post('/resultpage', async (req, res) => {
+  try {
+    const gameID = req.body.gameID
+    
+    if (gameID == undefined) {
+      console.log("gameID is undefined")
+      res.status(401).json({
+        "err": "Token authentication unsuccessful",
+        "code": 401
+      })
+    } else {
+      let gameData = await singleplayer.getGameData(gameID);
+      gameData = gameData.toObject();
+
+      ({correct, wrong} = await singleplayer.compareanswers(gameData.questionSet, gameData.answers))
+
+      gameData.correct = correct;
+      gameData.wrong = wrong;
+      
+      // console.log(gameData);
+      if (gameData !== null) {
+        res.status(202).json(gameData)
+      } else {
+        res.status(300).json({
+          "err": "No game history found",
+          "code": 200
+        })
+      }
+    }
+
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+
 // ---------------------- Sockets ------------------------------
 io.on("connection", socket => {
   console.log("new connection - ", socket.id);
@@ -186,7 +255,7 @@ io.on("connection", socket => {
       "answers": []
     }
     // console.log("gameData is - ",gameData);
-    
+
     let creatingGame = await singleplayer.createGame(gameData)
     if (creatingGame) {
       console.log("New game created at socketid ", socket.id, " and with gameData - ", gameData)
