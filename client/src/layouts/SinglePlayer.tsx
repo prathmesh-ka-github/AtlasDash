@@ -7,6 +7,8 @@ import { io, Socket } from "socket.io-client";
 
 export function SinglePlayer() {
   const server = import.meta.env.VITE_SERVER_URL;
+  const authtoken = Cookies.get('authtoken');
+  
   // const socket = io(server)
 
   const navigate = useNavigate();
@@ -33,7 +35,7 @@ export function SinglePlayer() {
     
     socketRef.current.on("connect", () => {
       setConnected(true);
-      socketRef.current?.emit("game-start");
+      socketRef.current?.emit("game-start",{authtoken});
     });
     socketRef.current.on("disconnect", () => setConnected(false));
     socketRef.current.on("timer_update", ({ timeLeft }) => setTimeLeft(timeLeft));
@@ -106,7 +108,6 @@ export function SinglePlayer() {
   }, []);
 
 
-  const authtoken = Cookies.get('authtoken');
   useEffect(() => {
     // We will send authtoken inside the header of the request in authorization section. This will enable us to use the body along with the token.
     const authenticateUser = async () => {
