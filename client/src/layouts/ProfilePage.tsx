@@ -44,6 +44,7 @@ export function ProfilePage() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [socketID, setSocketID] = useState('');
   const [gameHistory, setGameHistory] = useState([]);
 
   useEffect(() => {
@@ -190,7 +191,7 @@ export function ProfilePage() {
               <tbody>
 
                 {gameHistory.map((game:any, index) => (
-                  <tr key={index}>
+                  <tr onClick={()=>{navigate(`/result/${game.socketID}`)}} key={index}>
                     <td>{game.score}</td>
                     <td>S</td>
                     <td className='game-history-team'>{user?.name}</td>

@@ -10,6 +10,8 @@ export function ResultPage() {
     const navigate = useNavigate();
 
     const [score, setScore] = useState(0);
+    const [socketID, setSocketID] = useState(0);
+    const [username, setUsername] = useState();
 
     useEffect(() => {
         // We will send authtoken inside the header of the request in authorization section. This will enable us to use the body along with the token.
@@ -28,6 +30,9 @@ export function ResultPage() {
                     navigate('/');
                 }
                 setScore(data?.score)
+                setSocketID(data?.socketID)
+                setUsername(data?.username)
+
                 data.wrong.forEach((id:any) => {
                     document.querySelectorAll<SVGPathElement>(`[data-country="${id}"]`).forEach((path) => {
                         path.style.fill = "#FF5023";
@@ -61,7 +66,7 @@ export function ResultPage() {
                     Game Over
                 </h1>
                 <p className="font-Changa text-xl font-semibold text-gray-800">
-                    Total Score - {score}
+                    Total Score: {score}
                 </p>
             </div>
 
@@ -347,8 +352,21 @@ export function ResultPage() {
                         <path className='svggroup' data-country="141" d="M1677.45 543.75L1677.75 543.85L1678.15 544.35L1678.45 544.55L1678.75 544.65L1679.05 544.95L1679.85 545.35L1680.25 545.85V546.25L1680.35 546.85L1680.55 547.05L1680.85 547.35H1681.05L1681.15 547.75L1681.85 548.05L1682.25 547.95L1682.35 548.05V548.35L1682.05 548.45L1681.85 548.75L1681.35 548.55L1680.55 548.15H1680.05L1679.75 547.75L1679.05 547.35L1678.45 546.35L1677.85 545.35L1677.35 545.05L1676.65 544.35V543.85V543.65L1676.95 543.45L1677.25 543.55L1677.45 543.75Z" fill="#ECECEC" stroke="black" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </div>
-
-                <div className="w-full max-w-5xl flex justify-end mt-4">
+                <div className='justfy-start'>
+                    Game ID - {socketID} | username - {username}
+                </div>
+                <div className="w-full max-w-[80%] flex justify-end mt-4">
+                    <button
+                        className="px-12 py-3 text-xl font-semibold font-Changa shadow-md
+                       transition-all duration-200 hover:brightness-95 active:scale-95"
+                        style={{
+                            backgroundColor: '#D9D9D9',
+                            color: '#1a1a1a',
+                        }}
+                        onClick={() => navigate('/ProfilePage')}
+                    >
+                        Profile Page
+                    </button>
                     <button
                         className="px-12 py-3 mx-10 text-xl font-semibold font-Changa shadow-md
                        transition-all duration-200 hover:brightness-95 active:scale-95"
